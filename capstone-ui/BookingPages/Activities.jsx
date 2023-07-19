@@ -1,6 +1,6 @@
 import { activities } from "./data"
 const destination = "New York"
-export default function ThingsToDo (){
+export default function Activities (){
     return (
         <div className="things-to-do-page">
             <div className="user-actions">

@@ -3,6 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
+import { Link } from "react-router-dom"
 import { useState } from 'react'
 import ImageCarousel from './ImageCarousel'
 
@@ -100,6 +101,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     required: true,
                                 }}
                             />
+                            <Link to="/activities">
                             <Button disabled={(budget === null || budget === "") 
                                                || (travelers === null || travelers === "")
                                                || (arrivalDate === null || arrivalDate === "") 
@@ -108,6 +110,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                                ? true : false} 
                                     sx={{'border': '1px solid', 
                                     'height' : '55px'}}>Search</Button>
+                            </Link>
                             </form>
                         </div>
                     )} 
