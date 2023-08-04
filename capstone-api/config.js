@@ -1,12 +1,12 @@
 require("dotenv").config();
 const secretKey = `${process.env.SECRET_KEY}`;
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3002;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3008;
 
 function getDatabaseUri() {
     const dbUser = process.env.DATABASE_USER || "nomadia";
     const dbPass = process.env.DATABASE_PASS ? encodeURIComponent(process.env.DATABASE_PASS) : "";
-    const dbHost = process.env.DATABASE_HOST || "localhost";
+    const dbHost = process.env.DATABASE_HOST || "nomadia";
     const dbPort = process.env.DATABASE_PORT || 5432;
     const dbName = process.env.DATABASE_NAME || "nomadia";
 

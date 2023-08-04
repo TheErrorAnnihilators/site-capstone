@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import backgroundImage from './Assets/backgroundimage.jpg'
 import HotelCard from '../BookingPages/HotelCard';
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
+import Activities from '../../capstone-api/models/activities';
 
 function Booking({ itinerary }) {
     const [the_itinerary, set_the_itinerary] = useState(null);
@@ -40,6 +42,85 @@ function Booking({ itinerary }) {
 
 function BookingMenu({ itinerary }) {
     console.log(itinerary)
+    const navigate = useNavigate()
+    const [error, setError] = useState (null)
+
+    const [form, setForm] = useState({
+        userId: 0,
+        hotelData: {
+            name: "",
+            city: "",
+            price:0,
+            check_in: "",
+            check_out: ""
+        },
+        activities: [
+        {
+            name: "",
+            city: "",
+            price: 0,
+            check_in: "", 
+            check_out: ""
+        }
+        ]
+      })
+    
+    const navigateToPage =  async (e) => {
+        e.preventDefault()
+        setForm({
+            userId: 1, 
+            hotelData:{
+                name: itinerary.Hotel.name,
+                city: itinerary.Hotel.wishlistName,
+                check_in: itinerary.Hotel.checkinDate,
+                check_out: itinerary.Hotel.checkoutDate 
+            },
+            activities: [
+                {
+                    name: itinerary.Activities.name,
+                    city: itinerary.Activities.location.locality,
+                    price: 0,
+                    check_in:itinerary.Hotel.checkinDate, 
+                    check_out:itinerary.Hotel.checkoutDate 
+                }
+            ]
+
+        })
+
+        try {
+            const res = await axios.post(`http://localhost:3008/users/:id/itineraries`, form)
+            if (res) {
+              setForm({
+                userId: 0,
+                hotelData: {
+                    name: "",
+                    city: "",
+                    price:0,
+                    check_in: "",
+                    check_out: ""
+                },
+                activities: [
+                {
+                    name: "",
+                    city: "",
+                    price: 0,
+                    check_in: "", 
+                    check_out: ""
+                }
+                ]
+              })
+            
+            } else {
+              setError("Something went wrong with itinerary creation.")
+            }
+          } catch (err) {
+            console.log(err)
+            const message = err?.response?.data?.error?.message
+            setError(message ?? String(err))
+          } 
+        navigate("/Itineraries")
+    }
+    
     
     return (
         <>
@@ -147,7 +228,7 @@ function BookingMenu({ itinerary }) {
                     <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: ${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</h2>
                     <hr className="mt-4 w-64 border-2 border-white" />
                     <div className="flex items-center mt-[100px] ml-[210px]">
-                        <h2>create itinerary</h2>
+                        <h2 onClick={navigateToPage}>create itinerary</h2>
                         <h2 className='text-[25px] font-bold text-white mr-4'>Ready to checkout?</h2>
                         <Link to='/Checkout'>
                             <h2 className="text-green-400 font-bold text-[25px] hover:text-green-200">Checkout</h2>

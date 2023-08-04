@@ -30,6 +30,8 @@ function Itinerary({ arrivalDate, departureDate,
 }
 
 function ItineraryMenu({searchResults}) {
+
+  
  
   return (
     <>
@@ -106,14 +108,42 @@ function ItineraryMenu({searchResults}) {
 }
 
 function ItineraryCards({mockItinerary}){
+  const activityNames = mockItinerary.Activities.map(activity => activity.name);
+
   console.log("mock", mockItinerary)
   return(
-    <div>
-      <div>
-        <h1>Itinerary {mockItinerary.id} </h1>
-      </div>
-      <div>
-        <h3>Hotel: {mockItinerary.Hotel.name}</h3>
+    <div className='cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100'>
+      <div className='p-3 overflow-show bg-white mb-3'>
+        <div className='font-bold text-2xl h-10 overflow-scroll text-black'>
+         Itinerary {mockItinerary.id} 
+        </div>
+        <div className='flex text-center'>
+        <div className='flex flex-col'>
+          <div className='font-bold'>
+            Hotel: 
+          </div>
+        </div>
+        <div className='flex flex-col ml-2'>
+          {mockItinerary.Hotel.length === 0 ? "No hotels selected." : `${mockItinerary.Hotel.name}` }
+        </div>
+        </div>
+        <div>
+        <div className='underline font-bold'>
+          Activities
+        </div>
+        <div>
+            {mockItinerary.Activities.length === 0 ? "No activities selected." :
+            <ul>
+                {activityNames.map((name, index) => (
+                    <li key={index}>{name}</li>
+                ))}
+            </ul>
+            }
+        </div>
+        <div>
+          <h3>Total Price: ${mockItinerary.Hotel.price}</h3>
+        </div>
+        </div>
       </div>
     </div>
 
