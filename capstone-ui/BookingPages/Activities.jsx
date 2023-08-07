@@ -28,9 +28,71 @@ export default function Activities({
     const [activities, setActivities] = useState([]) // Initialize as an empty array
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
+    const [savedItinerary, setSavedItinerary] = useState({
+        userId: 1,
+        hotelData:{
+            name: "",
+            city:"",
+            price:0,
+            check_in:"",
+            check_out:""
+        },
+        activities:[
+            {
+            name: "",
+            city:"",
+            price:0,
+            check_in:"",
+            check_out:""
+         },
+    ],
+        flightData:{
+            origin: "new york",
+            destination: "california",
+            departing_at:"9am",
+            arriving_at: "9pm",
+            carrier:{
+                name:"carrierName"
+            }
+
+
+    }
+    })
     useEffect(() => {
         // Fetch activities data from the server
         setLoading(true)
+        setSavedItinerary({
+            userId: 1,
+            hotelData:{
+                name: itinerary.Hotel.name,
+                city:"",
+                price:0,
+                check_in:itinerary.Hotel.checkinDate,
+                check_out: itinerary.Hotel.checkoutDate
+            },
+            activities:[
+                {
+                name: "",
+                city:"",
+                price:0,
+                check_in:"",
+                check_out:""
+             },
+        ],
+            flightData:{
+                origin: "new york",
+                destination: "california",
+                departing_at:"9am",
+                arriving_at: "9pm",
+                carrier:{
+                    name:"carrierName"
+                }
+    
+    
+        }
+        })
+
+        
         axios
         .post("https://nomadia.onrender.com/api/places-search", {
             query: searchValue,
@@ -64,6 +126,19 @@ export default function Activities({
         event.preventDefault()
         setSortValue(event.target.value)
     }
+
+    const handleOnSubmit = async (e) => {
+        e.preventDefault()
+        
+        axios.post(`http://localhost:3009/api/users/:id/itineraries`, itinerary)
+        .then((response) => {
+            console.log("sent to backennd",response.data.results)
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    }
+
     
   return (
     <div className="flex flex-col w-screen h-screen">
@@ -96,12 +171,15 @@ export default function Activities({
                     <button
                       disabled={itinerary['Activities'].length === 0 === 0 ? true : false}
                       onClick={() => {
-                        navigate('/booking');
+                        if(itinerary['Activities'].length !== 0){
+                            navigate('/booking');  
+                        }
                       }}
                       className={itinerary['Activities'].length === 0 ? `bg-gray-100 text-gray-400` : ``}
                     >
                       {itinerary['Activities'].length === 0 ? 'Select an activity to continue' : 'Continue'}
                     </button>
+                    <button onClick = {handleOnSubmit}> Save For Later </button>
                   </div>
                 </div>
             </div>

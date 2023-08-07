@@ -86,9 +86,10 @@ router.post('/users/:id/favorites', async (req, res) => {
 router.post('/users/:id/itineraries', async (req, res) => {
   try {
     const userId = req.params.id;
-    const { hotelData, activities, flightData } = req.body;
+    //flightData
+    const { hotelData, activities,  } = req.body;
 
-    const credentials = {userId, hotelData, activities, flightData};
+    const credentials = {userId, hotelData, activities};
 
     // Call the addHotelWithActivitiesToItinerary function in the User model
     const result = await User.addHotelWithActivitiesToItinerary(credentials);

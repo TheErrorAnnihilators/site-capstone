@@ -67,14 +67,14 @@ class User {
         throw new BadRequestError("Activities is invalid");
       }
 
-      if (!flightData ) {
-        throw new BadRequestError("Flight data is missing or invalid.");
-      }
+      // if (!flightData ) {
+      //   throw new BadRequestError("Flight data is missing or invalid.");
+      // }
 
       
       // Step 1: Add the hotel and get its primary key (id) and add flights 
-      const flight = await addFlight(flightData);
-      const flightId = flight.id;
+      // const flight = await addFlight(flightData);
+      // const flightId = flight.id;
 
       const hotel = await addHotel(hotelData);
       const hotelId = hotel.id;
