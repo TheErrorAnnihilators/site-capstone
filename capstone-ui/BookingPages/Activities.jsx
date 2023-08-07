@@ -32,7 +32,7 @@ export default function Activities({
         // Fetch activities data from the server
         setLoading(true)
         axios
-        .post("https://nomadia.onrender.com/api/places-search", {
+        .post("http://localhost:3009/api/places-search", {
             query: searchValue,
             min_price: "1",
             max_price: priceValue,
@@ -64,6 +64,19 @@ export default function Activities({
         event.preventDefault()
         setSortValue(event.target.value)
     }
+
+    const handleOnSubmit = async (e) => {
+        e.preventDefault()
+        axios.post(`http://localhost:3009/api/users/:id/itineraries`, itinerary)
+        .then((response) => {
+            console.log("sent to backennd",response.data.results)
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    }
+
+        
     
   return (
     <div className="flex flex-col w-screen h-screen">
@@ -96,12 +109,15 @@ export default function Activities({
                     <button
                       disabled={itinerary['Activities'].length === 0 === 0 ? true : false}
                       onClick={() => {
-                        navigate('/booking');
+                        if (itinerary['Activities'].length !== 0){
+                            navigate('/booking');   
+                        }
                       }}
                       className={itinerary['Activities'].length === 0 ? `bg-gray-100 text-gray-400` : ``}
                     >
                       {itinerary['Activities'].length === 0 ? 'Select an activity to continue' : 'Continue'}
                     </button>
+                    <button onClick = {handleOnSubmit}> Save For Later </button>
                   </div>
                 </div>
             </div>

@@ -36,7 +36,7 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
     
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await axios.post('https://nomadia.onrender.com/api/hotels-search', hotelSearch);
+    const response = await axios.post('http://localhost:3009/api/hotels-search', hotelSearch);
     localStorage.setItem("checkin_date", hotelSearch.checkin_date);
     localStorage.setItem("checkout_date", hotelSearch.checkout_date);
     localStorage.setItem("dest_id", hotelSearch.dest_Id);
