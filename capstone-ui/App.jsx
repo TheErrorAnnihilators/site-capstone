@@ -15,6 +15,7 @@ import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
 import FlightsPage from './BookingPages/FlightsPage';
+import axios from "axios"
 
 
 const theme = createTheme({
@@ -32,22 +33,27 @@ function App() {
     const [filterActivities, setFilterActivities] = useState(true)
     const [filterHotels, setFilterHotels] = useState(true)
 
+    const [departureIATA, setDepartureIATA] = useState('')
+    const [arrivalIATA, setArrivalIATA] = useState('')
+
     const [destID, setDestID] = useState("")
+
     const [departureDate, setDepartureDate] = useState("")
     const [arrivalDate, setArrivalDate] = useState("")
-    const [destination, setDestination] = useState("")
-    const [travelers, setTravelers] = useState(1)
-    const [authenticated, setAuthenticated] = useState(false)
-    const [itinerary, setItinerary] = useState(
-         {
-            'Activities': [],
-            'Hotel': null,
-            'flight': null
-          }
-    );
-    const [activities, setActivities] = useState ({})
-    const [cost, setCost] = useState(0.00)
 
+    const [destination, setDestination] = useState("")
+
+    const [travelers, setTravelers] = useState(1)
+
+    const [authenticated, setAuthenticated] = useState(false)
+
+    const [itinerary, setItinerary] = useState({'Activities' : [],
+                                                'Hotel' : null,
+                                            'flight': null})
+    const [activities, setActivities] = useState ({})
+
+    const [cost, setCost] = useState(0.00)
+    const [userId, setUserId] = useState(0)
     const addToItinerary = (item)=>{
 
         
@@ -61,28 +67,16 @@ function App() {
           console.log("Itinerary")
           console.log(itinerary)
           console.log(itinerary.length)
-      }
-      
-      
+    }
+
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
             <div className="font-sans">
                 
                 <Router>
-                    <Navbar authenticated={authenticated}
-                        setAuthenticated={setAuthenticated}
-                        email={email}
-                        setEmail={setEmail}
-                        password={password}
-                        setPassword={setPassword}
-                        confirmPassword={confirmPassword}
-                        setConfirmPassword={setConfirmPassword}
-                        phoneNumber={phoneNumber}
-                        setPhoneNumber={setPhoneNumber}
-                        name={name}
-                        setName={setName}
-                        setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}/>
+                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
+                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}/>
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -122,10 +116,7 @@ function App() {
 
                         />
                          <Route path="/account" element={
-                            <Account 
-                            authenticated={authenticated}
-                            setAuthenticated={setAuthenticated}
-                            userData={userData}/>} 
+                            <Account/>} 
                         />
                          <Route path="/Itineraries" element={
                             <Itinerary
@@ -135,20 +126,23 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
-                                    authenticated={authenticated}
-                                    userId={userId}
+                                    userId = {userId}
                             />} 
 
                         />
                           <Route path="/Flights" element={
-                            <FlightsPage itinerary={itinerary} setItinerary={setItinerary} destination={destination} arrivalDate={arrivalDate} departureDate={departureDate} 
-                            travelers={travelers}/>} 
+                            <FlightsPage itinerary={itinerary} setItinerary={setItinerary} 
+                                         destination={destination} arrivalDate={arrivalDate} 
+                                         departureDate={departureDate} 
+                                         travelers={travelers} departureIATA={departureIATA}
+                                         arrivalIATA={arrivalIATA} cost={cost} userId = {userId}
+                            />} 
                         />
                          <Route path="/favorites" element={
-                            <Favorites authenticated={authenticated}/>} 
+                            <Favorites/>} 
                         />
                          <Route path="/booking" element={
-                            <Booking itinerary={itinerary} authenticated={authenticated}/>} 
+                            <Booking itinerary={itinerary}/>} 
                         />
                          <Route path="/checkout" element={
                             <Checkout itinerary={itinerary} arrivalDate={arrivalDate} departureDate={departureDate} destination={destination}/>} 

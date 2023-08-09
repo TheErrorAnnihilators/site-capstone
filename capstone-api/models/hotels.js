@@ -82,7 +82,7 @@ class Hotels {
         filter_by_currency: 'USD',
         //Keeping it at USD
 
-        dest_id: credentials.destId, //'-553173'
+        dest_id: '20088325', //'-553173'
         //Once the user searches the hotel by location
         //the dest_id field can be updated 
 

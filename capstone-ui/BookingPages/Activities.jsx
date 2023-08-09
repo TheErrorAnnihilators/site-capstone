@@ -56,11 +56,6 @@ export default function Activities({
     // })
     const navigate = useNavigate();
     useEffect(() => {
-        console.log("itinerary updated in activities", itinerary)
-        localStorage.setItem("Itinerary", JSON.stringify(itinerary));
-    }, [itinerary]);
-
-    useEffect(() => {
         // Fetch activities data from the server
         setLoading(true)
         axios

@@ -4,8 +4,6 @@ import FlightCard from './FlightCard';
 import { CircularProgress } from '@mui/material'
 import axios from 'axios'
 
-import { useNavigate } from 'react-router-dom';
-
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
                        departureDate, travelers, cost,
@@ -15,10 +13,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     const [loading, setLoading] = useState(false);
     const [cabinClass, setCabinClass] = useState("economy");
     const [selectedFlight, setSelectedFlight] = useState(null);
-<<<<<<< HEAD
-    const [cost, setCost] = useState(0)
-    const navigate = useNavigate();
-=======
     const [itinerariesSaved, setItinerariesSaved] = useState(0)
     const [savedItinerary, setSavedItinerary] = useState({
         userId: 1,
@@ -47,7 +41,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             carrier:{
                 name:"carrierName"
             }
->>>>>>> origin
 
 
     }
@@ -93,18 +86,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     setSearchResults(response.data);
     console.log("RES",searchResults)
     setLoading(false);
-<<<<<<< HEAD
-
-        let totalCost = 0;
-    if (searchResults.length > 0) {
-        totalCost = searchResults.reduce((acc, flight) => acc + parseFloat(flight.totalAmount), 0);
-    }
-
-    setCost(totalCost.toFixed(2));
-
-
-=======
->>>>>>> origin
     }
     const handleSelectFlight = (flight) => {
         if (selectedFlight === flight) {
@@ -126,119 +107,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             setCabinClass("business");
         }
     };
-<<<<<<< HEAD
-
-        
-    useEffect(() => {
-        console.log("itinerary updated in flights", itinerary)
-        localStorage.setItem("Itinerary", JSON.stringify(itinerary));
-    }, [itinerary]);
-
-    
-    useEffect(() => {
-        setFlight();
-      }, [cabinClass]);
-    //     let item = {
-        
-    //         "totalAmount": "290.71",
-    //         "totalCurrency": "USD",
-    //         "slices": [
-    //             {
-    //                 "segments": [
-    //                     {
-    //                         "origin": "John F. Kennedy International Airport",
-    //                         "destination": "O'Hare International Airport",
-    //                         "departingAt": "2023-09-02T00:46:00",
-    //                         "arrivingAt": "2023-09-02T01:56:00",
-    //                         "carrier": {
-    //                             "name": "Duffel Airways",
-    //                             "logoUrl": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
-    //                             "website": null
-    //                         }
-    //                     }
-    //                 ]
-    //             },
-    //             {
-    //                 "segments": [
-    //                     {
-    //                         "origin": "O'Hare International Airport",
-    //                         "destination": "John F. Kennedy International Airport",
-    //                         "departingAt": "2023-09-04T02:19:00",
-    //                         "arrivingAt": "2023-09-04T05:29:00",
-    //                         "carrier": {
-    //                             "name": "Duffel Airways",
-    //                             "logoUrl": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
-    //                             "website": null
-    //                         }
-    //                     }
-    //                 ]
-    //             }
-    //         ]
-        
-    // }
-    return (
-        <div className="w-screen h-screen">
-          {loading && (
-            <div>
-              <div className="text-4xl px-56 mt-4 ml-5">Fetching flights...  <CircularProgress /></div>
-            </div>
-          )}
-          {!loading && (
-            <div className="flex w-screen h-screen px-56 bg-slate-900">
-              <div className="relative shadow-lg py-4 px-8 bg-white w-screen overflow-y-scroll">
-                <div className="border-b flex">
-                  <div>
-                    <div className="flex">
-                      <div className="mr-2 text-4xl">Flights to </div>
-                      <div className="font-semibold text-blue-500 text-4xl"> {destination.toUpperCase()}</div>
-                    </div>
-                    <div className="flex-auto">
-                      <div className="text-2xl flex flex-col mt-3">
-                        <div>{arrivalDate} to {departureDate}</div>
-                        <div className="mb-3">{travelers} {travelers > 1 ? 'travelers' : 'traveler'}</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="ml-auto">
-                    <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
-                    <div>
-                      <div>Excluding taxes and fees.</div>
-                      <div>
-                        <button
-                          disabled={!itinerary.flights || itinerary.flights.length === 0}
-                          onClick={() => {
-                            navigate('/booking');
-                          }}
-                          className={!itinerary.flights || itinerary.flights.length === 0 ? `bg-gray-100 text-gray-400` : ``}
-                        >
-                          {!itinerary.flights || itinerary.flights.length === 0 ? 'Select flights to continue' : 'Continue'}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {(searchResults.length !== 0) && (
-                  <div className="grid grid-cols-1 gap-6 mt-3">
-                    {searchResults.map((item, index) => (
-                      <FlightCard
-                        key={index}
-                        flight={item}
-                        itinerary={itinerary}
-                        setItinerary={setItinerary}
-                        checkout={true} // Set to true if this is the checkout page
-                        cost={cost}
-                        setCost={setCost}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      );
-}
-=======
     useEffect(() => {
         setFlight();
       }, [cabinClass]);
@@ -281,7 +149,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         });
         setItinerariesSaved(itinerariesSaved + 1)
        
->>>>>>> origin
 
     };
 

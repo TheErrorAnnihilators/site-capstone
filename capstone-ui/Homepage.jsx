@@ -64,7 +64,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
             const response = await axios.post('https://nomadiafe.onrender.com/api/hotels-location', {
                 location_name: destination,
             });
-            localStorage.setItem("Destination", destination);
     
             setDestID(response.data);
             
@@ -94,12 +93,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
         else {
             setSubmit(true);
         }
-
     }, [travelers, arrivalDate, departureDate, destination, validateArrival, 
         validateDeparture, destID, arrivalIATA, departureIATA, filterFlights,
         filterHotels, filterActivities]);
-
-    
     
     
     const homepage_america = {
