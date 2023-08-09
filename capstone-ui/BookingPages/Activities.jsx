@@ -6,11 +6,6 @@ import ActivityCards from "./ActivityCards"
 import { useNavigate } from "react-router-dom"
 import { acts } from "./data"; // Check the correct path for this import
 
-// export default function Activities({ addToItinerary, departureDate, arrivalDate, destination, travelers, activities }) {
-//   const [searchValue, setSearchValue] = useState("");
-
-//Stuff added 
-
 export default function Activities({
                                     addToItinerary,
                                     departureDate,
@@ -19,7 +14,8 @@ export default function Activities({
                                     travelers,
                                     itinerary,
                                     setItinerary,
-                                    cost
+                                    cost,
+                                    userId
 }) {
     const [searchValue, setSearchValue] = useState("")
     const [inputValue, setInputValue] = useState("")
@@ -27,6 +23,37 @@ export default function Activities({
     const [sortValue , setSortValue] = useState("relevance")
     const [activities, setActivities] = useState([]) // Initialize as an empty array
     const [loading, setLoading] = useState(false)
+    // const [itinerariesSaved, setItinerariesSaved] = useState(0)
+    // const [savedItinerary, setSavedItinerary] = useState({
+    //     userId: 1,
+    //     hotelData:{
+    //         name: "",
+    //         city:"",
+    //         price:0,
+    //         check_in:"",
+    //         check_out:""
+    //     },
+    //     activities:[
+    //         {
+    //         name: "",
+    //         city:"",
+    //         price:0,
+    //         check_in:"",
+    //         check_out:""
+    //      },
+    // ],
+    //     flightData:{
+    //         origin: "new york",
+    //         destination: "california",
+    //         departing_at:"2023-09-02T00:46:00",
+    //         arriving_at: "2023-09-02T01:56:00",
+    //         carrier:{
+    //             name:"carrierName"
+    //         }
+
+
+    // }
+    // })
     const navigate = useNavigate();
     useEffect(() => {
         console.log("itinerary updated in activities", itinerary)
@@ -45,7 +72,6 @@ export default function Activities({
             sort: sortValue
         })
         .then((response) => {
-            // Update the activities state with the fetched data
             console.log(response.data.results)
             setActivities(response.data.results)
             setLoading(false)
@@ -53,7 +79,7 @@ export default function Activities({
         .catch((error) => {
             console.error(error)
         })
-    }, [priceValue, destination, sortValue, searchValue]) // Add searchValue and destination to the dependencies array
+    }, [priceValue, destination, sortValue, searchValue])
 
     const handlePriceSelect = (event) =>{
         event.preventDefault()
@@ -63,12 +89,72 @@ export default function Activities({
         event.preventDefault()
         console.log(inputValue)
         setSearchValue(inputValue)
-    }   
-
+    }  
     const handleSortSelect = (event) => {
         event.preventDefault()
         setSortValue(event.target.value)
     }
+    // const handleOnSubmit = async (e) => {
+    //     e.preventDefault();
+    //    // if (itinerary['Activities'].length !== 0 && itinerary.Hotel !== null && itinerary.flight !== null){
+
+        
+    //     // Update the state using the setSavedItinerary function
+    //     setSavedItinerary({
+    //         hotelData: {
+    //             name: itinerary.Hotel.name,
+    //             city: itinerary.Hotel.wishlistName,
+    //             price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
+    //             check_in: itinerary.Hotel.checkinDate,
+    //             check_out: itinerary.Hotel.checkoutDate,
+    //         },
+    //         activities:itinerary.Activities.map(activity => ({ 
+    //             //itinerary.Activities[0].name
+    //             //itinerary.Activities[0].location.locality
+    //                 name: activity.name,
+    //                 city: activity.location.locality,
+    //                 price: 0,
+    //                 check_in: itinerary.Hotel.checkinDate,
+    //                 check_out: itinerary.Hotel.checkoutDate,
+    //             })),
+            
+    //         flightData: {
+    //             origin: "new york",
+    //             destination: "california",
+    //             departing_at: "2023-09-02T00:46:00",
+    //             arriving_at: "2023-09-02T01:56:00",
+    //             carrier: {
+    //                 name: "carrierName",
+    //             },
+    //         },
+    //     });
+    //     setItinerariesSaved(itinerariesSaved + 1)
+       
+
+    // };
+
+    // useEffect(() => {
+        
+    //     const submitData = async () => {
+    //         try {
+        
+    //             const response = await axios.post(
+    //                 `http://localhost:3009/api/users/${userId}/itineraries`,
+    //                 savedItinerary
+    //             );
+
+    //             console.log("successful", response.data.results);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+
+    //     // Call the submitData function when itinerariesSaved changes
+    //     submitData();
+    // }, [itinerariesSaved]);
+
+    
+
     
   return (
     <div className="flex flex-col w-screen h-screen">
@@ -99,7 +185,7 @@ export default function Activities({
                   <div>Excluding taxes and fees.</div>
                   <div>
                     <button
-                      disabled={itinerary['Activities'].length === 0 === 0 ? true : false}
+                      disabled={itinerary['Activities'].length === 0 ? true : false}
                       onClick={() => {
                         navigate('/booking');
                       }}
@@ -107,6 +193,7 @@ export default function Activities({
                     >
                       {itinerary['Activities'].length === 0 ? 'Select an activity to continue' : 'Continue'}
                     </button>
+        
                   </div>
                 </div>
             </div>
@@ -146,14 +233,12 @@ export default function Activities({
                     itinerary={itinerary}
                     setItinerary={setItinerary}
                     />
-                ))
-                
-            }
+            ))
+        }
         </div>
-        </div>
-        </div>
-        )}
-        </div>
-        
+    </div>
+    </div>
+    )}
+    </div>   
   );
 }

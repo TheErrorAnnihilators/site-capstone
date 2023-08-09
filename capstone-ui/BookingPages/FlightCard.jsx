@@ -48,7 +48,23 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
       setLoading(false);
     }, 800); // Adjust the delay as needed
   };
-  
+ //console.log("flights", itinerary)
+  function updateItinerary() {
+    if (selected) {
+      // Remove flight from itinerary
+      setItinerary((prevState) => ({
+        ...prevState,
+        flights: prevState.flights.filter((item) => item.departingAt !== flight.departingAt),
+      }));
+    } else {
+      // Add flight to itinerary
+      setItinerary((prevState) => ({
+        ...prevState,
+        flights: [...prevState.flights, flight],
+      }));
+    }
+    setSelected((prevSelected) => !prevSelected);
+  }
 
   function convertToNormalTime(dateTimeString) {
     const dateObj = new Date(dateTimeString);
@@ -95,7 +111,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
       }
     }
   }, [flight]);
-
+  console.log("fli-slices", flight)
   return (
     <div className='p-5'>
       {loading ? (
