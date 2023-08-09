@@ -63,6 +63,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                 location_name: destination,
             });
             console.log("finsihed searching")
+            localStorage.setItem("Destination", destination);
     
             setDestID(response.data);
     
@@ -91,7 +92,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
         } else {
             setSubmit(true);
         }
+
     }, [travelers, arrivalDate, departureDate, destination, validateArrival, validateDeparture, destID]);
+
+    
     
     
     const homepage_america = {

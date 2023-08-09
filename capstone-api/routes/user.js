@@ -3,6 +3,9 @@ const router = express.Router();
 const { User } = require("../models/user.js");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken'); // Add this line
+const { createUserJwt } = require('../utils/token.js');
+const security = require('../middleware/security.js');
+const { UnauthorizedError } = require('../utils/errors.js');
 
 
 // Users
@@ -20,6 +23,7 @@ router.get('/users', async (req, res) => {
 
 // Get a user by ID
 router.get('/users/:id', async (req, res) => {
+  console.log("hereeeeee");
   const { id } = req.params;
   try {
     const user = await User.getUserById(id);
@@ -166,8 +170,10 @@ router.post('/register', async (req, res) => {
   try {
     // Save the user to the database
     const newUser = await User.registerUser(name, email, hashedPassword, phone_number);
+    const token = createUserJwt(newUser); 
+    console.log(token)
     
-    res.status(201).json(newUser);
+    res.status(201).json({newUser, token, password});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to register user." });
@@ -181,6 +187,8 @@ router.post('/login', async (req, res) => {
   try {
     // Check if user exists
     const user = await User.getUserByEmail(email);
+    const token = createUserJwt(user); 
+
     if (!user) {
       return res.status(400).json({ error: "User not found." });
     }
@@ -192,7 +200,7 @@ router.post('/login', async (req, res) => {
     }
 
     // If both email and password are correct, send a successful response
-    res.json({ message: "Login successful.", user });
+    res.json({ message: "Login successful!", user, token, password });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to login." });

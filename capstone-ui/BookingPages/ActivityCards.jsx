@@ -56,6 +56,12 @@ export default function ActivityCards({activity, setItinerary=null, checkout=fal
             setActivityPhotoIndex((prevIndex) => prevIndex - 1)
         }
         }
+    
+        useEffect(() => {
+            console.log("itinerary updated in activities", itinerary)
+            localStorage.setItem("Itinerary", JSON.stringify(itinerary));
+        }, [itinerary]);
+
   return (
      
     <div className="flex flex-col rounded-md w-76 shadow-md border border-blue-500">

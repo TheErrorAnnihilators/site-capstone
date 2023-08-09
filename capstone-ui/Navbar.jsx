@@ -3,61 +3,109 @@ import { Link, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = 'https://nomadiafe.onrender.com/api';
 
-export default function Navbar({ authenticated, setAuthenticated }) {
+export default function Navbar({
+    authenticated,
+    setAuthenticated,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    phoneNumber,
+    setPhoneNumber,
+    name,
+    setName,
+ }) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+
+
+
 
   const navigate = useNavigate()
 
   async function handleLogout() {
-    
     // Update authenticated state to false
     setAuthenticated(false);
+  
+    // Clear form fields
 
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setPhoneNumber('');
+    setName('');
+    localStorage.removeItem('token');
+    localStorage.removeItem("password");
+    localStorage.removeItem("Itinerary");
+
+
+
+  
     // Navigate to the home page
-        navigate('/');
-
+    navigate('/');
   }
+
+ 
 
   async function handleRegister(e) {
     e.preventDefault();
     const userData = {
-        name: "username",
+      name: name,
       password: password,
       email: email,
-      phone_number: "1111111"
+      phone_number: phoneNumber
     };
+
+    localStorage.setItem("password", password);
+
+    if (!/^\d{10}$/.test(phoneNumber)) {
+        setPhoneError('Phone number must be 10 digits.');
+        return;
+      }
+
+      
     try {
-      const response = await axios.post('https://nomadiafe.onrender.com/api/register', userData);
+      const response = await axios.post('http://localhost:3002/api/register', userData);
       // Assuming the response contains a user object upon successful registration
-      const user = response.data;
+      const { token, newUser } = response.data;
+      localStorage.setItem("token", token)
+      localStorage.setItem('userId', newUser.id); // Save the user ID
+
+
 
       // Update authenticated state to true
       setAuthenticated(true);
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
       setRegisterOpen(false); // Close the register modal after successful registration
 
       // Navigate to the "Account" page
-      navigate('/Account'); 
+      if (authenticated) {
+        navigate('/'); 
 
-    if (authenticated) {
-        navigate('/Account'); 
-    }
-     // This will trigger a full page reload
-      // If you are using React Router's Switch and Route components for navigation, you can use:
-      // history.push('/Account'); // Make sure to have history object from react-router-dom available
+      }
+
     } catch (error) {
       // Handle registration error
-      console.error(error);
+      if (error.response && error.response.status === 500) {
+        // Email conflict error
+        setEmailError('Email already exists. Please use a different email.');
+    } else {
+        // Other registration error
+        setEmailError('Registration Failed');
+    }
+    console.error(error);
+
     }
   }
 
@@ -67,30 +115,39 @@ export default function Navbar({ authenticated, setAuthenticated }) {
       password: password,
       email: email,
     };
+    localStorage.setItem("password", password);
     try {
-      const response = await axios.post(`${BASE_URL}/login`, userData);
+      const response = await axios.post(`http://localhost:3002/api/login`, userData);
       // Assuming the response contains a token and user object upon successful login
       const { token, user } = response.data;
 
       // Save token in local storage or a secure cookie for future authenticated requests
       localStorage.setItem('token', token);
+      localStorage.setItem('userId', user.id); // Save the user ID
+
 
       // Update authenticated state to true
       setAuthenticated(true);
-      setEmail('');
-      setPassword('');
       setLoginOpen(false); // Close the login modal after successful login
 
       // Navigate to the "Account" page
       if (authenticated) {
-        navigate('/Account'); 
+        navigate('/'); 
 
       }
-      navigate('/Account'); // This will trigger a full page reload
+    // This will trigger a full page reload
       // If you are using React Router's Switch and Route components for navigation, you can use:
       // history.push('/Account'); // Make sure to have history object from react-router-dom available
     } catch (error) {
       // Handle login error
+      if (error.response && error.response.status === 400) {
+        // Invalid login credentials
+        setLoginError('Invalid email or password.');
+    } else {
+        // Other login error
+        setLoginError('Login Failed');
+    }
+    console.error(error);
       console.error(error);
     }
   }
@@ -130,11 +187,33 @@ export default function Navbar({ authenticated, setAuthenticated }) {
                                         </div>
                                         <div>Save your itineraries and view past bookings.</div>
                                         <div className="bg-blue-500 w-full h-0.5 my-3"></div>
+                                        <div>Name<span className="text-red-500">*</span></div>
+                                        <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
+                                             onChange={(e) => {
+                                                setName(e.target.value);
+                                              }}
+                                            type="name" required 
+                                        />
                                         <div>Email<span className="text-red-500">*</span></div>
                                         <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
-                                            value={email} onChange={(e) => setEmail(e.target.value)}
+                                             onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                setEmailError(''); // Clear the error message when email changes
+                                              }}
                                             type="email" required 
                                         />
+                                        <div>PhoneNumber<span className="text-red-500">*</span></div>
+                                        <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
+                                             onChange={(e) => {
+                                                setPhoneNumber(e.target.value);
+                                                setPhoneError(''); // Clear the error message when phone number changes
+                                              }}
+                                              type="text" // Using "text" type as it's a phone number
+                                              required
+                                            />
+                                            {phoneError && (
+                                              <p className="text-red-500 text-sm">{phoneError}</p>
+                                            )}
                                         <div>Password<span className="text-red-500">*</span></div>
                                         <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
                                             value={password} onChange={(e) => setPassword(e.target.value)}
@@ -148,6 +227,10 @@ export default function Navbar({ authenticated, setAuthenticated }) {
                                         {(confirmPassword !== password) && (
                                             <div className="text-red-500 mb-3">Passwords do not match.</div>
                                         )}
+                                        {emailError && (
+                                            <p className="text-red-500 text-sm">{emailError}</p>
+                                        )}
+                                       
                                         <Button sx={{'border': '1px solid', 
                                                     'height' : '50px',
                                                     'width' : '100%',
@@ -178,15 +261,30 @@ export default function Navbar({ authenticated, setAuthenticated }) {
                                         <div>View your saved itineraries and past bookings.</div>
                                         <div className="bg-blue-500 w-full h-0.5 my-3"></div>
                                         <div>Email<span className="text-red-500">*</span></div>
-                                        <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
-                                            value={email} onChange={(e) => setEmail(e.target.value)}
-                                            type="email" required 
+                                        <input
+                                            className="border text-center border-blue-500 rounded-md w-full mb-4"
+                                            value={email}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                setLoginError('');
+                                            }}
+                                            type="email"
+                                            required
                                         />
                                         <div>Password<span className="text-red-500">*</span></div>
-                                        <input className="border text-center border-blue-500 rounded-md w-full mb-4" 
-                                            value={password} onChange={(e) => setPassword(e.target.value)}
-                                            type="password" required 
+                                        <input
+                                            className="border text-center border-blue-500 rounded-md w-full mb-4"
+                                            value={password}
+                                            onChange={(e) => {
+                                                setPassword(e.target.value);
+                                                setLoginError('');
+                                            }}
+                                            type="password"
+                                            required
                                         />
+                                         {loginError && (
+                                            <p className="text-red-500 text-sm">{loginError}</p>
+                                        )}
                                         <Button sx={{'border': '1px solid', 
                                                     'height' : '50px',
                                                     'width' : '100%',

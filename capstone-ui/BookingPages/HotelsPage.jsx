@@ -55,6 +55,11 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
     searchHotels();
   }, []);
 
+  useEffect(() => {
+    console.log("itinerary updated in home", itinerary)
+     localStorage.setItem("Itinerary", JSON.stringify(itinerary));
+  }, [itinerary]);
+
   return (
     <div className="w-screen h-screen">
       {loading && (

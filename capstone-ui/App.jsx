@@ -15,6 +15,8 @@ import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
 import FlightsPage from './BookingPages/FlightsPage';
+import { useControlledValueWithTimezone } from '@mui/x-date-pickers/internals';
+import axios from 'axios'
 
 
 const theme = createTheme({
@@ -31,24 +33,52 @@ function App() {
     const [filterFlights, setFilterFlights] = useState(false)
     const [filterActivities, setFilterActivities] = useState(true)
     const [filterHotels, setFilterHotels] = useState(true)
-
     const [destID, setDestID] = useState("")
-
     const [departureDate, setDepartureDate] = useState("")
     const [arrivalDate, setArrivalDate] = useState("")
-
     const [destination, setDestination] = useState("")
-
     const [travelers, setTravelers] = useState(1)
-
     const [authenticated, setAuthenticated] = useState(false)
-
-    const [itinerary, setItinerary] = useState({'Activities' : [],
-                                                'Hotel' : null,
-                                            'flight': null})
+    const [itinerary, setItinerary] = useState(
+         {
+            'Activities': [],
+            'Hotel': null,
+            'flight': null
+          }
+    );
     const [activities, setActivities] = useState ({})
-
     const [cost, setCost] = useState(0.00)
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [name, setName] = useState('');
+    const [userData, setUserData] = useState(null);
+    
+    window.addEventListener('beforeunload', (event) => {
+      event.returnValue = `Are you sure you want to leave?`;
+    });
+   
+   async function fetchUserDataFromToken(token, userId) {
+      console.log("???", token, userId);
+      console.log("hereeee");
+      
+      try {
+          // Make an API call to fetch user data using the token
+          const response = await axios.get(`http://localhost:3002/api/users/${userId}`, {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          });
+  
+          // Return the user data if successful
+          return response.data;
+      } catch (error) {
+          // Handle errors appropriately
+          console.error('Error fetching user data:', error);
+          throw error;
+      }
+  }
 
     const addToItinerary = (item)=>{
 
@@ -64,6 +94,41 @@ function App() {
           console.log(itinerary)
           console.log(itinerary.length)
       }
+
+      
+      const fetchUserData = async (token, userId) => {
+        try {
+          const user = await fetchUserDataFromToken(token, userId);
+          setUserData(user);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+
+      useEffect(() => {
+        const token = localStorage.getItem('token');
+    
+        if (token) {
+          setAuthenticated(true); // Set authenticated status to true
+    
+          // Assuming you have the user's ID stored somewhere
+          const userId =  localStorage.getItem("userId"); // Replace with the actual user ID
+          fetchUserData(token, userId);
+        }
+      }, []);
+
+      useEffect(() => {
+        console.log("userdata changed", userData);
+      }, [userData]);
+
+      // let storageitem = JSON.parse(localStorage.getItem("Itinerary"));
+    
+      // useEffect(() => {
+      //   console.log("itinerary updated", itinerary)
+      //   localStorage.setItem("Itinerary", JSON.stringify(itinerary));
+      //   console.log("itinerary has been updated", JSON.parse(localStorage.getItem("Itinerary")));
+      // }, [itinerary]);
+    
       
       
     return ( 
@@ -72,7 +137,20 @@ function App() {
             <div className="font-sans">
                 
                 <Router>
-                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}/>
+                <Navbar
+                        authenticated={authenticated}
+                        setAuthenticated={setAuthenticated}
+                        email={email}
+                        setEmail={setEmail}
+                        password={password}
+                        setPassword={setPassword}
+                        confirmPassword={confirmPassword}
+                        setConfirmPassword={setConfirmPassword}
+                        phoneNumber={phoneNumber}
+                        setPhoneNumber={setPhoneNumber}
+                        name={name}
+                        setName={setName}
+                    />
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -109,7 +187,10 @@ function App() {
 
                         />
                          <Route path="/account" element={
-                            <Account/>} 
+                            <Account 
+                            authenticated={authenticated}
+                            setAuthenticated={setAuthenticated}
+                            userData={userData}/>} 
                         />
                          <Route path="/Itineraries" element={
                             <Itinerary
@@ -119,18 +200,19 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
+                                    authenticated={authenticated}
                             />} 
 
                         />
                           <Route path="/Flights" element={
                             <FlightsPage itinerary={itinerary} setItinerary={setItinerary} destination={destination} arrivalDate={arrivalDate} departureDate={departureDate} 
-                            travelers={travelers}/>} 
+                            travelers={travelers} cost={cost} setCost={setCost}/>} 
                         />
                          <Route path="/favorites" element={
-                            <Favorites/>} 
+                            <Favorites authenticated={authenticated}/>} 
                         />
                          <Route path="/booking" element={
-                            <Booking itinerary={itinerary}/>} 
+                            <Booking itinerary={itinerary} authenticated={authenticated}/>} 
                         />
                          <Route path="/checkout" element={
                             <Checkout itinerary={itinerary} arrivalDate={arrivalDate} departureDate={departureDate} destination={destination}/>} 
