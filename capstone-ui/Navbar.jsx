@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = 'https://nomadiafe.onrender.com/api';
 
+<<<<<<< HEAD
 export default function Navbar({
     authenticated,
     setAuthenticated,
@@ -22,7 +24,12 @@ export default function Navbar({
     name,
     setName,
  }) {
+=======
+export default function Navbar({ authenticated, setAuthenticated,
+                                 setDepartureDate, setArrivalDate, setUserId }) {
+>>>>>>> main
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   const [emailError, setEmailError] = useState('');
@@ -33,13 +40,18 @@ export default function Navbar({
 
 
 
+  
   const navigate = useNavigate()
 
   async function handleLogout() {
     // Update authenticated state to false
     setAuthenticated(false);
+<<<<<<< HEAD
   
     // Clear form fields
+=======
+    setUserId(0)
+>>>>>>> main
 
     setEmail('');
     setPassword('');
@@ -54,7 +66,13 @@ export default function Navbar({
 
   
     // Navigate to the home page
+<<<<<<< HEAD
     navigate('/');
+=======
+        navigate('/')
+        location.reload()
+
+>>>>>>> main
   }
 
  
@@ -67,6 +85,7 @@ export default function Navbar({
       email: email,
       phone_number: phoneNumber
     };
+<<<<<<< HEAD
 
     localStorage.setItem("password", password);
 
@@ -76,9 +95,13 @@ export default function Navbar({
       }
 
       
+=======
+    setRegisterLoad(true)
+>>>>>>> main
     try {
       const response = await axios.post('http://localhost:3002/api/register', userData);
       // Assuming the response contains a user object upon successful registration
+<<<<<<< HEAD
       const { token, newUser } = response.data;
       localStorage.setItem("token", token)
       localStorage.setItem('userId', newUser.id); // Save the user ID
@@ -87,6 +110,18 @@ export default function Navbar({
 
       // Update authenticated state to true
       setAuthenticated(true);
+=======
+      const user = response.data;
+      console.log("userData/reg", user)
+      setUserId(user.id)
+
+      // Update authenticated state to true
+      setAuthenticated(true);
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+      setRegisterLoad(false)
+>>>>>>> main
       setRegisterOpen(false); // Close the register modal after successful registration
 
       // Navigate to the "Account" page
@@ -97,6 +132,7 @@ export default function Navbar({
 
     } catch (error) {
       // Handle registration error
+<<<<<<< HEAD
       if (error.response && error.response.status === 500) {
         // Email conflict error
         setEmailError('Email already exists. Please use a different email.');
@@ -106,6 +142,10 @@ export default function Navbar({
     }
     console.error(error);
 
+=======
+      setRegisterLoad(false)
+      console.error(error);
+>>>>>>> main
     }
   }
 
@@ -120,6 +160,8 @@ export default function Navbar({
       const response = await axios.post(`http://localhost:3002/api/login`, userData);
       // Assuming the response contains a token and user object upon successful login
       const { token, user } = response.data;
+      console.log("userData/log", user)
+      setUserId(user.id)
 
       // Save token in local storage or a secure cookie for future authenticated requests
       localStorage.setItem('token', token);
@@ -153,27 +195,33 @@ export default function Navbar({
   }
 
     return (
+      
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
         <Link to="/" className="flex">
           <div className="flex">
-            <Button disabled={true}>Home</Button>
+            <Button onClick={() => {setDepartureDate(''), setArrivalDate('')}}>Home</Button>
           </div>
         </Link>
-        <Link to="/Account" className="flex">
-          <div className="flex">
-            <Button disabled={true}>Account</Button>
-          </div>
-        </Link>
+
+        <div className="flex">
+        
         <div className="flex">
           {authenticated ? (
-            <Button onClick={handleLogout}>Sign Out</Button>
+            <>
+                <Link to="/Account" className="flex">
+                <div className="flex">
+                <Button>Account</Button>
+                </div>
+                </Link>
+                <Button onClick={handleLogout}>Sign out</Button>
+            </>
           ) : (
             <>
-              <Button>FAQ</Button>
               <Button onClick={() => setRegisterOpen(true)}>Sign up</Button>
               <Button onClick={() => setLoginOpen(true)}>Log in</Button>
             </>
           )}
+          </div>
                 <Modal 
                     open={registerOpen}
                     >
@@ -227,10 +275,16 @@ export default function Navbar({
                                         {(confirmPassword !== password) && (
                                             <div className="text-red-500 mb-3">Passwords do not match.</div>
                                         )}
+<<<<<<< HEAD
                                         {emailError && (
                                             <p className="text-red-500 text-sm">{emailError}</p>
                                         )}
                                        
+=======
+                                        {registerLoad && (
+                                            <div>Creating account... <CircularProgress size={25}/></div>
+                                        )}
+>>>>>>> main
                                         <Button sx={{'border': '1px solid', 
                                                     'height' : '50px',
                                                     'width' : '100%',

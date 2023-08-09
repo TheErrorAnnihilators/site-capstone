@@ -15,6 +15,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+<<<<<<< HEAD
   useEffect(() => {
     // Check if the selected flight is in the itinerary
     setSelected(itinerary.flight === flight);
@@ -24,6 +25,25 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
     // If the button is disabled, prevent further actions
     if (loading) {
       return;
+=======
+  const handleSelect = () => {
+    onSelectFlight(flight);
+  };
+ //console.log("flights", itinerary)
+  function updateItinerary() {
+    if (selected) {
+      // Remove flight from itinerary
+      setItinerary((prevState) => ({
+        ...prevState,
+        flights: prevState.flights.filter((item) => item.departingAt !== flight.departingAt),
+      }));
+    } else {
+      // Add flight to itinerary
+      setItinerary((prevState) => ({
+        ...prevState,
+        flights: [...prevState.flights, flight],
+      }));
+>>>>>>> main
     }
   
     // Toggle the selected state
@@ -95,7 +115,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
       }
     }
   }, [flight]);
-
+  console.log("fli-slices", flight)
   return (
     <div className='p-5'>
       {loading ? (
