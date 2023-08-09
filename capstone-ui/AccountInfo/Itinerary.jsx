@@ -31,7 +31,7 @@ const [userItineraries, setUserItineraries] = useState(null)
   useEffect(() => {
    
     axios
-    .get(`http://localhost:3009/api/users/${userId}/itineraries`)
+    .get(`/api/users/${userId}/itineraries`)
     .then((response) => {
       console.log("successful")
       console.log("res", response.data)

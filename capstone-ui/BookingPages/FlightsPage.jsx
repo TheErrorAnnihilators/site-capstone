@@ -158,7 +158,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             try {
         
                 const response = await axios.post(
-                    `http://localhost:3009/api/users/${userId}/itineraries`,
+                    `/api/users/${userId}/itineraries`,
                     savedItinerary
                 );
 
