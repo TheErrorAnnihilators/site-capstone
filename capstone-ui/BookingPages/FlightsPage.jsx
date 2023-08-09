@@ -75,7 +75,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
 
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await axios.post('http://localhost:3009/api/flights', flight);
+    const response = await axios.post('/api/flights', flight);
     localStorage.setItem("numTravelers", flight.numTravelers);
     localStorage.setItem("origin", flight.origin);
     localStorage.setItem("destination", flight.destination);
