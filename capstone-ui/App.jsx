@@ -38,6 +38,9 @@ function App() {
 
     const [destID, setDestID] = useState("")
 
+    const [FlightCost, setFlightCost] = useState(0)
+
+
     const [departureDate, setDepartureDate] = useState("")
     const [arrivalDate, setArrivalDate] = useState("")
 
@@ -181,7 +184,8 @@ function App() {
                                          departureDate={departureDate} 
                                          travelers={travelers} departureIATA={departureIATA}
                                          arrivalIATA={arrivalIATA} cost={cost} userId = {userId}
-                                          setCost={setCost}
+                                          setFlightCost={setFlightCost}
+                                          FlightCost={FlightCost}
                             />} 
                         />
                          <Route path="/favorites" element={

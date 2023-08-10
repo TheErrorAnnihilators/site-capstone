@@ -79,7 +79,7 @@ export default function Navbar({
 
       
     try {
-      const response = await axios.post('https://nomadiafe.onrender.com/api/register', userData);
+      const response = await axios.post('/api/register', userData);
       // Assuming the response contains a user object upon successful registration
       const { token, newUser } = response.data;
       // console.log(response.data);
