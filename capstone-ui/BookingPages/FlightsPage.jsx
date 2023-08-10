@@ -210,8 +210,8 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         <>
           {!loading && (
             <div className="flex flex-col w-screen h-screen">
-              <div className="flex w-screen h-screen px-56 bg-slate-900">
-                <div className="relative shadow-lg py-4 px-8 bg-white w-screen overflow-y-scroll">
+              <div className="flex w-screen h-screen px-56 bg-slate-900 overflow-scroll">
+                <div className="relative shadow-lg py-4 px-8 bg-white w-screen h-screen overflow-scroll">
                   <div className="flex border-b">
                     <div>
                       <div className="flex">
@@ -235,9 +235,9 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                       <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
                       <div>
                         <div>Excluding taxes and fees.</div>
-                        <div>
+                        <div className="flex flex-col">
                           <button
-                            disabled={itinerary['Activities'] === null}
+                            disabled={itinerary['flight'] === null || itinerary === {}}
                             onClick={() => {
                               navigate('/booking');
                             }}
@@ -256,24 +256,24 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                             onClick={handleOnSubmit}
                             className={
                               !flightsFound || itinerary['flight'] === null
-                                ? 'bg-gray-100 text-gray-400'
-                                : ''
+                                ? 'bg-gray-100 text-gray-400 mt-3 mb-2'
+                                : 'mt-3 mb-2'
                             }
                           >
-                            Save For Later
+                            Save for later
                           </button>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div className="relative w-full lg:max-w-sm flex flex-row mr-[270px] mb-[10px]">
-                    <h2 className="text-3xl mr-[10px] mt-[3px] font-semibold">
-                      Cabin Class:
+                    <h2 className="text-2xl mr-[10px] mt-8">
+                      Cabin class:
                     </h2>
                     <select
                       value={cabinClass}
                       onChange={(e) => setCabinClass(e.target.value)} // Update the cabin class directly
-                      className="w-[200px] p-1 text-black bg-white border-white-2 rounded-md shadow-xl outline-md appearance-none focus:border-indigo-600 mb-5 text-center text-2xl"
+                      className="w-[200px] p-1 text-black mt-8 bg-white border-white-2 rounded-md shadow-xl cursor-pointer outline-md appearance-none focus:border-indigo-600 mb-5 text-center text-2xl"
                     >
                       {["Economy", "First", "Business", "Premium Economy"].map((option) => (
                         <option key={option} value={option}>

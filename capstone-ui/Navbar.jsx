@@ -183,6 +183,7 @@ export default function Navbar({
             <Button onClick={() => {setDepartureDate(''), setArrivalDate(''), setItinerary({'Activities' : [],
                         'Hotel' : null,
                         'flight': null}),  setCost(0.00) }}>Home</Button>
+
           </div>
         </Link>
 

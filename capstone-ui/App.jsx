@@ -122,7 +122,7 @@ function App() {
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
-            <div className="font-sans">
+            <div className="font-sans h-screen w-screen overflow-scroll">
                 
                 <Router>
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
