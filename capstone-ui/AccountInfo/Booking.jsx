@@ -153,13 +153,12 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                 }}
             >
                 {/* Main content */}
-                <div className="h-full flex flex-grow items-center justify-center">
-                    <div className="w-1/3 flex-grow p-4 mb-10">
-                    <h1 className="text-5xl mb-20 ml-2 font-bold font-sans" style={{
+                <div className="h-full flex justify-center bg-slate-900">
+                    <div className="w-full mb-10 pl-10">
+                    <h1 className="text-5xl mb-10 ml-2 font-semibold font-sans mt-4" style={{
                             textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
                             color: '#f0f0f0', // White text color
                             transition: 'text-shadow 0.2s ease-in-out',
-                            cursor: 'pointer',
                             // Add other styles to make it stand out more
                             letterSpacing: '2px',
                         }}>
@@ -168,24 +167,24 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                         <img
                             src={pfp} // Replace with the actual URL of the profile photo
                             alt="Profile"
-                            className="ml-6 w-1/2 h-1/2 object-cover"
+                            className="w-1/2"
                         />
                         <p className="mt-8 font-black">
 
                         </p>
                             <Link to='/Account' className='text-black'>
-                                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-12 border border-white border-2 shadow-md">
-                                    Account
-                                </span>
+                            <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Account
+                            </button>
                             </Link>
                             <Link to='/Itineraries' className='text-black'>
-                                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
-                                    Itineraries
-                                </span>
+                            <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Itineraries
+                            </button>
                             </Link>
-                            <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
-                                Booking
-                            </span>
+                            <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Latest booking
+                            </button>
                             {/* <Link to='/Favorites' className='text-black'>
                                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                                     Favorites
@@ -193,10 +192,10 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                             </Link> */}
                         </div>
                     </div>
-                    <div className="w-2/3 h-4/5 mb-20 flex flex-col mt-[-10px]">
+                    <div className="w-full flex flex-col bg-black bg-opacity-60 px-2">
                         <div>
                         
-                        <h1 className="text-4xl font-bold text-black mb-2 mt-10" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.6)' }}>Booking</h1>
+                        <h1 className="text-4xl text-white mb-2 mt-4" >Latest booking</h1>
 
                         </div>
                        
@@ -204,7 +203,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                         <div className="border-t border-black-500 border-2 mb-10" />
                         {!loading ? (
                             <>
-                            <div className="cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100">
+                            <div className="flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100">
                             {itinerary != null && (
                                                     (itinerary.Hotel != null) ||
                                                     (itinerary.Activities != null && itinerary.Activities.length > 0) ||
@@ -213,7 +212,10 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                 <>
                                 <div className="p-3 overflow-show bg-white mb-3">
                                     
-                                    <div className="flex justify-between">
+                                    <div className="flex flex-col justify-between">
+                                        <div className="font-bold text-2xl">{itinerary?.Hotel?.name}</div>
+                                       <div>${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
+                                       <div className="text-gray-500 mb-3">Total price</div>
                                         <div
                                             className={
                                                 itinerary?.Hotel?.reviewScoreWord === 'Good' ||
@@ -323,12 +325,12 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                           {(itineraryPresent && itinerary.Hotel != null) ? (
                 <div>
 
-                    <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: {thefinalcost}</h2>
+                    <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: ${thefinalcost}</h2>
                     <hr className="mt-4 w-64 border-2 border-white" />
-                    <div className="flex items-center mt-[100px] ml-[210px]">
-                        <h2 className='text-[25px] font-bold text-white mr-4'>Ready to checkout?</h2>
+                    <div className="flex items-center mt-[100px]">
+                        <h2 className='text-[25px] font-bold text-white mr-5'>Ready to check out?</h2>
                         <Link to='/Checkout'>
-                            <h2 className="text-green-400 font-bold text-[25px] hover:text-green-200">Checkout</h2>
+                            <h2 className="text-green-400 font-bold text-[25px] hover:text-green-200">Check out</h2>
                         </Link>
                     </div>
                 </div>

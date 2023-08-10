@@ -246,7 +246,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                         <div>Excluding taxes and fees.</div>
                         <div className="flex flex-col">
                           <button
-                            disabled={itinerary['flight'] === null || itinerary === {}}
+                            disabled={itinerary['flight'] === null || itinerary == {}}
                             onClick={() => {
                               navigate('/booking');
                             }}
