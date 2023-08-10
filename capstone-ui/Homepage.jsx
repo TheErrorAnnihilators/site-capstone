@@ -59,13 +59,15 @@ export default function Homepage({ filterFlights, setFilterFlights,
     const [validateArrival, setValidateArrival] = useState({})
     const [validateDeparture, setValidateDeparture] = useState({})
     const [validDates, setValidDates] = useState(null)
+    const [validRoute, setValidRoute] = useState(null)
 
     function padZero(number) {
         return number.toString().padStart(2, "0")
       }
 
       async function handleSearch() {
-        if (submit && validDates !== false && validDates !== null) {
+        if (submit && validDates !== false && validDates !== null
+            && validRoute !== null && validRoute !== false) {
             console.log("searching?")
             const response = await axios.post('https://nomadiafe.onrender.com/api/hotels-location', {
                 location_name: destination,
@@ -86,6 +88,14 @@ export default function Homepage({ filterFlights, setFilterFlights,
             setValidDates(true);
         }
     }, [validateArrival, validateDeparture]);
+
+    useEffect(() => {
+        if (departureIATA === arrivalIATA && departureIATA !== '' && arrivalIATA !== '') {
+            setValidRoute(false);
+        } else {
+            setValidRoute(true);
+        }
+    }, [validRoute]);
     
     useEffect(() => {
         if ((travelers === null || travelers === "") ||
@@ -182,7 +192,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         />
                         <Chip
                             label="Flights"
-                            onClick={() => setFilterFlights(!filterFlights)}
+                            onClick={() => {setDepartureDate(null),
+                                            setArrivalDate(null),
+                                            setFilterFlights(!filterFlights)}
+                                    }
                             variant={filterFlights ? "filled" : "outlined"}
                             color={filterFlights ? "success" : "default"}
                             sx={{'borderRadius':'4px', 'width':'67px',
@@ -280,6 +293,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 {!validDates && (
                                     <div className="text-red-500 font-bold pl-4 pb-3">Check-out date must be after check-in date.</div>
                                 )}
+                                {(!validRoute && filterFlights) && (
+                                    <div className="text-red-500 font-bold pl-4 pb-3">Departure airport must be different from arrival airport.</div>
+                                )}
                             </div>
                         )} 
                     </div>
@@ -331,8 +347,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             <ImageCarousel images={homepage_oceania}/>
                         </div>
                     </div>
-                    <div className="text-2xl mt-3">Frequently asked questions</div>
-                    <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                 </div>
             </div>
             </div>

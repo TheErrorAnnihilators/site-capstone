@@ -179,7 +179,9 @@ export default function Navbar({
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
         <Link to="/" className="flex">
           <div className="flex">
-            <Button onClick={() => {setDepartureDate(''), setArrivalDate('')}}>Home</Button>
+            <Button onClick={() => {setDepartureDate(null), setArrivalDate(null), setItinerary({'Activities' : [],
+                        'Hotel' : null,
+                        'flight': null})}}>Home</Button>
           </div>
         </Link>
 
