@@ -41,8 +41,8 @@ function App() {
     const [FlightCost, setFlightCost] = useState(0)
 
 
-    const [departureDate, setDepartureDate] = useState("")
-    const [arrivalDate, setArrivalDate] = useState("")
+    const [departureDate, setDepartureDate] = useState(null)
+    const [arrivalDate, setArrivalDate] = useState(null)
 
     const [destination, setDestination] = useState("")
 

@@ -112,7 +112,7 @@ export default function ActivityCards({activity, setItinerary=null, checkout=fal
       <div className={`p-3 overflow-show ${checkout ? 'bg-white' : ''}`}>
           <div className="flex">
           <div className = "info">
-              <div className="font-bold text-2xl h-10">{activity.name}</div>
+              <div className="font-bold text-2xl h-10 overflow-scroll">{activity.name}</div>
               <div className="flex w-full overflow-scroll h-12">
                 {activity.categories.map((item) => <div className="border border-blue-800 px-2 rounded-md max-h-9 mx-1 font-bold text-blue-600 flex justify-center items-center text-xs overflow-scroll">{item.name}</div>)}
               </div>
