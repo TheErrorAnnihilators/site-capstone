@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { BadRequestError } = require("../utils/errors");
 const db = require('../db')
-const rapidapikey = '6e3eaf92c2msh051dfb6b48d6e1ap117a81jsnd49091eeccff'
+const rapidapikey = process.env.rapidapikey
 const rapidapihost = process.env.rapidapihost
 const axios = require('axios');
 
@@ -26,7 +26,7 @@ class Hotels {
         locale: 'en-us'
     },
     headers: {
-        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
+        'X-RapidAPI-Key': rapidapikey,
         'X-RapidAPI-Host': rapidapihost
     }
     };
@@ -82,7 +82,7 @@ class Hotels {
         filter_by_currency: 'USD',
         //Keeping it at USD
 
-        dest_id: '20088325', //'-553173'
+        dest_id: credentials.dest_Id, //'-553173'
         //Once the user searches the hotel by location
         //the dest_id field can be updated 
 
@@ -121,7 +121,7 @@ class Hotels {
         // Default: 0
       },
       headers: {
-        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
+        'X-RapidAPI-Key': rapidapikey,
         'X-RapidAPI-Host': rapidapihost
       }
     };
@@ -157,7 +157,7 @@ class Hotels {
         locale: 'en-us'
       },
       headers: {
-        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
+        'X-RapidAPI-Key': rapidapikey,
         'X-RapidAPI-Host': rapidapihost
       }
     };
