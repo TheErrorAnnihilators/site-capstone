@@ -266,7 +266,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                               !flightsFound || savedItinerary.flightData === null ||
                               savedItinerary.hotelData === null ||
                               savedItinerary.activities === null
-                                ? 'Incomplete Itinerary'
+                                ? ''
                                 : ''
                             }
                             position="bottom"
