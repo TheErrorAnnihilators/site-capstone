@@ -151,63 +151,81 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     }
   }, [flight]);
   return (
-    <div className='p-5'>
+    <div className='p-5 rounded-md'>
      
-        <div className='h-[300px] w-[995px] mr-[200px] border border-black-10 shadow-lg'>
-          <div className='flex flex-row'>
-            <div className='p-3 flex flex-col'>
-              <div>
-                <div className='flex flex-row mb-[120px] mr-2'>
-                  <img
-                    className='w-[50px] h-[50px] mr-[-20px] mt-3'
-                    src={flight.slices[0].segments[0].carrier.logoUrl}
-                    alt="Airline Logo"
-                  />
-                  <h1 className='ml-10 mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureInbound}
-                  </h1>
-                  <div className='flex flex-col'>
-                    <hr className="absolute h-1 mt-[40px] w-[400px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px] mb-[10px]" />
-                    <h1 className='absolute text-3xl ml-[140px] mt-[50px] text-blue-500'>
-                      {flight.slices[0].segments[0].carrier.name}
-                    </h1>
-                  </div>
-                  <h1 className='absolute ml-[627px] mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureOutbound}
-                  </h1>
+        <div className='border border-black-10 shadow-lg rounded-md'>
+          <div className='flex justify-between'>
+            <div className='p-3 flex'>
+                <div>
+                
+                <div className="flex">
+                <div>
+                    <div className="text-xl mb-2 font-bold">Outbound</div>
+                    <div className='flex mr-2 border-b pb-4'>
+                        
+                        <div className="mr-2">
+                        <img
+                            className='w-[50px] h-[50px] mr-[20px]'
+                            src={flight.slices[0].segments[0].carrier.logoUrl}
+                            alt="Airline Logo"
+                        />
+                    </div>
+                    <div className="flex flex-col text-xl">
+                        <h2 className='whitespace-nowrap'>
+                            Depart: {formattedDepartureInbound}
+                        </h2>
+                        <h2> Arrive: {formattedDepartureOutbound}</h2>
+                    </div>
+                    <div className='flex mx-8 items-end'>
+                        <div>
+                            <h2 className='text-2xl text-blue-500'>
+                            {flight.slices[0].segments[0].carrier.name}
+                            </h2>
+                        </div>
+                    </div>
+                    </div>
                 </div>
-                <div className='flex flex-row'>
-                  <img
-                    className='w-[50px] h-[50px] mt-[-20px] mr-5'
-                    src={flight.slices[1].segments[0].carrier.logoUrl}
-                    alt="Airline Logo"
-                  />
-                  <h1 className='mt-4 text-4xl whitespace-nowrap mt-[-20px]'>
-                    {formattedArrivalInbound}
-                  </h1>
-                  <div className='flex flex-col'>
-                    <hr className="h-1 mt-[-1px] w-[400px] my-8 bg-gray-200 border-0 dark:bg-black ml-[20px] mb-[10px]" />
-                    <h1 className='text-3xl ml-[140px]  text-blue-500'>
-                      {flight.slices[1].segments[0].carrier.name}
-                    </h1>
+
+                <div>
+                    <div className="text-xl mb-2 font-bold">Inbound</div>
+                    <div className='flex mr-2 border-b pb-4'>
+                    <div className="mr-2">
+                    <img
+                        className='w-[50px] h-[50px] mr-[20px]'
+                        src={flight.slices[1].segments[0].carrier.logoUrl}
+                        alt="Airline Logo"
+                    />
                   </div>
-                  <h1 className='ml-3 mt-4 text-4xl whitespace-nowrap mt-[-20px]'>
-                    {formattedArrivalOutbound}
-                  </h1>
+                  <div className="flex flex-col text-xl">
+                    <h2 className='whitespace-nowrap'>
+                        Depart: {formattedArrivalInbound}
+                    </h2>
+                    <h2> Arrive: {formattedArrivalOutbound}</h2>
+                  </div>
+                  <div className='flex mx-8 items-end'>
+                    <div>
+                        <h2 className='text-2xl text-blue-500'>
+                        {flight.slices[1].segments[0].carrier.name}
+                        </h2>
+                    </div>
+                  </div>
+                    </div>
                 </div>
-              </div>
-              <div>{/* Additional content */}</div>
-            </div>
-            <div className='absolute h-[300px] min-h-[1em] w-0.5 self-stretch bg-black opacity-100 dark:opacity-50 left-[850px] mr-3'></div>
-            <div className='absolute flex flex-col justify-center p-5 ml-[800px]'>
+                </div>
+                </div>
+                </div>
+                <div className='flex p-5 flex-col'>
               {/* Total Price */}
-              <h1 className='text-3xl mt-10'>Total Price: </h1>
-              <h1 className='text-3xl mt-8 text-green-500'>${flight.totalAmount}</h1>
-              <h1 className='text-xl mt-3 text-gray-500'>Total price for all travelers</h1>
+              <div className="flex">
+                <h2 className='text-xl mr-3 font-bold'>Total price: </h2>
+                <h2 className='text-xl text-green-500'>${flight.totalAmount}</h2>
+              </div>
+              <div>
+              <h2 className='text-sm text-gray-500'>Price for all travelers</h2>
               {/* Select button */}
               <div className="mt-4 mb-2">
               <button
-              className={`p-2 rounded ${
+              className={`rounded ${
                 selected ? 'bg-green-600 text-gray-100' : ''
               }`}
               onClick={handleSelectFlight}
@@ -216,7 +234,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
             >
               {selected ? 'Selected' : 'Select'}
             </button>
-
+            </div>
             </div>
             </div>
           </div>

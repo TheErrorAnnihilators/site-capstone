@@ -208,17 +208,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                                     ) && (
                                 <>
                                 <div className="p-3 overflow-show bg-white mb-3">
-                                    <div className="font-bold text-2xl h-10 overflow-scroll text-black">{itinerary?.Hotel?.name}</div>
-                                    <div className="flex">
-                                        <div className="flex flex-col">
-                                            <div className="font-bold">${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
-                                            <div>Rating: {itinerary?.Hotel?.reviewScore}</div>
-                                        </div>
-                                        <div className="flex flex-col ml-2">
-                                            <div className="text-gray-500">total price</div>
-                                            <div className="text-gray-500">{itinerary?.Hotel?.reviewCount} reviews</div>
-                                        </div>
-                                    </div>
+                                    
                                     <div className="flex justify-between">
                                         <div
                                             className={
@@ -269,7 +259,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                               {formattedDepartureInbound}
                                             </h1>
                                             <div className='flex flex-col'>
-                                              <hr className="h-1 mt-[40px] w-[150px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px] mb-[10px]" />
+                                              <hr className="h-1 mt-[40px] w-[150px] my-8 bg-gray-200 border-0 ml-[10px] mb-[10px]" />
                                               {/* Airline Name */}
                                               <h1 className='text-2xl ml-[5px] mt-[-2px] text-blue-500 whitespace-nowrap'>
                                                 {flight.slices[0].segments[0].carrier.name}
@@ -292,7 +282,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                               {formattedArrivalInbound}
                                             </h1>
                                             <div className='flex flex-col'>
-                                              <hr className="h-1 mt-[-80px] w-[150px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px]" />
+                                              <hr className="h-1 mt-[-80px] w-[150px] my-8 bg-gray-200 border-0 ml-[10px]" />
                                               {/* Airline Name */}
                                               <h1 className='text-2xl ml-[5px] mt-[-10px] text-blue-500 whitespace-nowrap'>
                                                 {flight.slices[1].segments[0].carrier.name}
