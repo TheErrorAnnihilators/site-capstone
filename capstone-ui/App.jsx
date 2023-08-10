@@ -18,6 +18,7 @@ import FlightsPage from './BookingPages/FlightsPage';
 import axios from "axios"
 
 
+
 const theme = createTheme({
     typography: {
       allVariants: {
@@ -118,6 +119,9 @@ function App() {
         }
       };
       
+    useEffect(() => {
+        console.log("userdata");
+    }, [theuserData])
 
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -142,6 +146,7 @@ function App() {
                                     setActivities = {setActivities}
                                     departureIATA={departureIATA} arrivalIATA={arrivalIATA}
                                     setDepartureIATA={setDepartureIATA} setArrivalIATA={setArrivalIATA}
+                                    authenticated={authenticated}
                             />
                         } />
                         <Route path="/activities" element={
@@ -198,7 +203,7 @@ function App() {
                                          arrivalIATA={arrivalIATA} cost={cost} userId = {userId} setCost={setCost}
                                          hotelCost={hotelCost} setHotelCost={setHotelCost} 
                                          FlightCost={FlightCost} setFlightCost={setFlightCost}
-                                         cabinClass={cabinClass} setCabinClass={setCabinClass}
+                                         cabinClass={cabinClass} setCabinClass={setCabinClass} authenticated={authenticated}
                             />} 
                         />
                          <Route path="/favorites" element={

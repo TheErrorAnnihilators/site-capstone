@@ -23,6 +23,9 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     // console.log("itinerayflight ", itinerary.flight, " ", itinerary.flight.name, " ", flight.name);
     // setSelected(itinerary.flight && itinerary.flight.name === flight.name && itinerary.flight.name != null);
     useEffect(() => {
+      if (loading) {
+        return;
+      }
       console.log(flight, " the data");
       setSelected(
         itinerary.flight &&
@@ -78,11 +81,11 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     console.log("selected ", selected, " loading ", loading);
 
   
-    setTimeout(() => {
-      setItinerary(updatedItinerary);
-      setLoading(false);
-    }, 800); // Adjust the delay as needed
-    console.log("the itinerary", itinerary);
+    // setTimeout(() => {
+    //   setItinerary(updatedItinerary);
+    //   setLoading(false);
+    // }, 800); // Adjust the delay as needed
+    // console.log("the itinerary", itinerary);
   };
 
   
@@ -104,6 +107,8 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     }
     setSelected((prevSelected) => !prevSelected);
   }
+  useEffect(()=> {
+  },[itinerary])
 
   function convertToNormalTime(dateTimeString) {
     const dateObj = new Date(dateTimeString);

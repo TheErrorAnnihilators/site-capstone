@@ -75,7 +75,7 @@ function ItineraryMenu({userItineraries,hasItineraries, authenticated}) {
  
   return (
     <>
-    <div className="flex w-screen h-screen px-64"
+    <div className="flex w-screen min-h-screen px-64 min-h-screen bg-slate-900"
      style={{
       /* Set a fallback color in case the image is not loaded */
       backgroundColor: '#0f0c29', // Fallback color
@@ -215,7 +215,7 @@ function ItineraryCards({userItinerary, index}){
 
   console.log("mock", userItinerary)
   return(
-    <div className='cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100'>
+    <div className='cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll'>
       <div className='p-3 overflow-show bg-white mb-3' style={{ flex: 1 }}>
         <div className='font-bold text-2xl h-10 overflow-scroll text-black'>
          Itinerary {id}

@@ -57,6 +57,10 @@ function AccountMenu({ authenticated, setAuthenticated }) {
     }
   }, [authenticated]);
 
+  useEffect(() => {
+  
+  }, [userData])
+
     useEffect(() => {
       const token = localStorage.getItem('token');
     

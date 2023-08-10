@@ -4,11 +4,13 @@ import FlightCard from './FlightCard';
 import { CircularProgress } from '@mui/material'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Tooltip } from 'react-tippy';
+
 
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
                        departureDate, travelers, cost, setCost,
-                       departureIATA, arrivalIATA, userId, setFlightCost, FlightCost, setHotelCost, hotelCost, cabinClass, setCabinClass }) {
+                       departureIATA, arrivalIATA, userId, setFlightCost, FlightCost, setHotelCost, hotelCost, cabinClass, setCabinClass, authenticated }) {
 
     const navigate = useNavigate();
 
@@ -132,6 +134,9 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         setFlight();
       }, [cabinClass]);
 
+      useEffect(() => {
+      }, [savedItinerary]);
+
     useEffect(() => {
       let totalprice = cost + FlightCost;
       console.log("totalprice updated", totalprice);
@@ -251,17 +256,70 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                               ? 'Select a flight to continue'
                               : 'Continue'}
                           </button>
-                            <button
-                            disabled={!flightsFound || itinerary['flight'] === null}
-                            onClick={handleOnSubmit}
-                            className={
-                              !flightsFound || itinerary['flight'] === null
-                                ? 'bg-gray-100 text-gray-400 mt-3 mb-2'
-                                : 'mt-3 mb-2'
+                          {authenticated && (
+                          <Tooltip
+                            title={
+                              !flightsFound || savedItinerary.flightData === null ||
+                              savedItinerary.hotelData === null ||
+                              savedItinerary.activities === null
+                                ? 'Incomplete Itinerary'
+                                : ''
                             }
+                            position="bottom"
+                            trigger="mouseenter"
+                            arrow={true}
+                            style={{ maxWidth: '100px' }}
                           >
-                            Save for later
-                          </button>
+                            <button
+                              disabled={
+                                !flightsFound ||
+                                savedItinerary.flightData === null ||
+                                savedItinerary.hotelData === null ||
+                                savedItinerary.activities === null
+                              }
+                              onClick={handleOnSubmit}
+                              className={
+                                !flightsFound ||
+                                savedItinerary.flightData === null ||
+                                savedItinerary.hotelData === null ||
+                                savedItinerary.activities === null
+                                  ? 'bg-gray-100 text-gray-400'
+                                  : ''
+                              }
+                            >
+                              Save For Later
+                            </button>
+                          </Tooltip>
+                        )}
+
+                          {!authenticated && <Tooltip
+                            title={
+                              !flightsFound || itinerary['flight'] === null || itinerary['hotel'] == null || itinerary['Activities'] == []
+                                ? 'Login/Register to save'
+                                : ''
+
+                            }
+                            position="bottom"
+                            trigger="mouseenter"
+                            arrow={true}
+                            style={{ maxWidth: '100px' }} // Adjust the maxWidth value as needed
+                          >
+                            {/* Your "Save For Later" button code */}
+                            <button
+                              disabled={!flightsFound || itinerary['flight'] === null || itinerary['hotel'] == null || itinerary['Activities'] == []}
+                              onClick={handleOnSubmit}
+                              className={
+                                !flightsFound || itinerary['flight'] === null || itinerary['hotel'] == null || itinerary['Activities'] == []
+                                  ? 'bg-gray-100 text-gray-400'
+                                  : ''
+                              }
+                            >
+                              Save For Later
+                            </button>
+                          </Tooltip>}
+
+
+
                         </div>
                       </div>
                     </div>
