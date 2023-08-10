@@ -181,7 +181,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             try {
         
                 const response = await axios.post(
-                    `/api/users/${userId}/itineraries`,
+                    `https://nomadiafe.onrender.com/api/users/${userId}/itineraries`,
                     savedItinerary
                 );
                 console.log(savedItinerary)
