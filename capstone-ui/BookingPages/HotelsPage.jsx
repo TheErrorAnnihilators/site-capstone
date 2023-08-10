@@ -5,12 +5,12 @@ import '../index.css'
 import HotelCard from './HotelCard'
 import axios from 'axios'
 
-export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, itinerary, setItinerary, filterActivities }) {
+export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, itinerary, setItinerary, filterActivities, filterFlights }) {
   const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
+ 
   async function searchHotels() {
     let hotelSearch = {
       order_by: 'review_score',
@@ -36,7 +36,7 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
     
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 3200));
-    const response = await axios.post('https://nomadiafe.onrender.com/api/hotels-search', hotelSearch);
+    const response = await axios.post('http://localhost:3002/api/hotels-search', hotelSearch);
     console.log("finsihed fetching search results")
 
     localStorage.setItem("checkin_date", hotelSearch.checkin_date);
@@ -86,9 +86,13 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
                     <button
                       disabled={itinerary.Hotel == null? true : false}
                       onClick={() => {
-                        filterActivities
-                          ? navigate('/activities')
-                          : navigate('/booking');
+                        if (filterActivities) {
+                          navigate('/activities');
+                        } else if (filterFlights) {
+                          navigate('/flights');
+                        } else {
+                          navigate('/booking');
+                        }
                       }}
                       className={itinerary.Hotel == null ? `bg-gray-100 text-gray-400` : ``}
                     >
