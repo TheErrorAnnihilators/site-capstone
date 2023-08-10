@@ -142,6 +142,10 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
       console.log("totalprice updated", totalprice);
     }, [cost])
 
+    useEffect(() => {
+        console.log(itinerary)
+    }, [])
+
 //for save for later feature
       const handleOnSubmit = async (e) => {
         e.preventDefault();

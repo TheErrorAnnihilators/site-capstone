@@ -81,11 +81,11 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     console.log("selected ", selected, " loading ", loading);
 
   
-    // setTimeout(() => {
-    //   setItinerary(updatedItinerary);
-    //   setLoading(false);
-    // }, 800); // Adjust the delay as needed
-    // console.log("the itinerary", itinerary);
+    setTimeout(() => {
+      setItinerary(updatedItinerary);
+      setLoading(false);
+    }, 800); // Adjust the delay as needed
+    console.log("the itinerary", itinerary);
   };
 
   
