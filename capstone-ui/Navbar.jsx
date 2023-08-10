@@ -11,7 +11,7 @@ export default function Navbar({
     authenticated,
     setAuthenticated,
     name,
-    setName, setDepartureDate, setArrivalDate, setUserId, setItinerary }) {
+    setName, setDepartureDate, setArrivalDate, setUserId, setItinerary, theuserData, setUserData }) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -49,7 +49,8 @@ export default function Navbar({
     localStorage.removeItem("password");
     localStorage.removeItem("Itinerary");
 
-    setUserId(0)
+    setUserId('')
+    setUserData('')
     setItinerary({'Activities' : [],
                         'Hotel' : null,
                         'flight': null}) //resets itinerary when user logs out
@@ -80,13 +81,14 @@ export default function Navbar({
 
       
     try {
-      const response = await axios.post('/api/register', userData);
+      const response = await axios.post('https://nomadiafe.onrender.com/api/register', userData);
       // Assuming the response contains a user object upon successful registration
       const { token, newUser } = response.data;
-      // console.log(response.data);
+      console.log(response.data);
       localStorage.setItem("token", token)
       // localStorage.setItem('userId', newUser.id); // Save the user ID
-      // setUserId(newUser.id)
+      setUserId(newUser.id)
+      setUserData(newUser);
 
 
 
@@ -134,8 +136,10 @@ export default function Navbar({
       console.log(response);
       const { token, user } = response.data;
       console.log("userData/log", user)
-      console.log("?????", response.data);
+      // console.log("?????", response.data);
       setUserId(user.id)
+      setUserData(user);
+
 
       // Save token in local storage or a secure cookie for future authenticated requests
       localStorage.setItem('token', token);

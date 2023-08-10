@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import HotelModal from './HotelModal';
 
 export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary, 
-                                    setItinerary, cost, setCost, checkout = false }) {
+                                    setItinerary, cost, setCost, checkout = false, setHotelCost }) {
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary,
     const newCost = (parseFloat(cost) - oldHotelCost + newHotelCost).toFixed(2);
   
     setCost(newCost);
+    setHotelCost(newCost)
   
     setItinerary((prevItinerary) => ({
       ...prevItinerary,

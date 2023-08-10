@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom'
 
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
-                       departureDate, travelers, cost,
-                       departureIATA, arrivalIATA, userId, setFlightCost, FlightCost }) {
+                       departureDate, travelers, cost, setCost,
+                       departureIATA, arrivalIATA, userId, setFlightCost, FlightCost, setHotelCost, hotelCost, cabinClass, setCabinClass }) {
 
     const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
 
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [cabinClass, setCabinClass] = useState("economy");
+    // const [cabinClass, setCabinClass] = useState("");
     const [selectedFlight, setSelectedFlight] = useState(null);
     const [itinerariesSaved, setItinerariesSaved] = useState(0)
     const [savedItinerary, setSavedItinerary] = useState({
@@ -51,11 +51,36 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
 
     }
     })
+
+    const [flightsFound, setFlightsFound] = useState(true);
+
+  
+    useEffect(() => {
+      setFlightsFound(searchResults.length > 0);
+    }, [searchResults]);
+  
+    const handleOnClick = (option) => {
+      console.log("Selected option:", option);
+    
+      if (option === "Premium Economy" && cabinClass !== "premium_economy") {
+        console.log("Setting cabin class to Premium Economy");
+        setCabinClass("premium_economy");
+      } else if (option === "Economy" && cabinClass !== "economy") {
+        console.log("Setting cabin class to Economy");
+        setCabinClass("economy");
+      } else if (option === "First" && cabinClass !== "first") {
+        console.log("Setting cabin class to First");
+        setCabinClass("first");
+      } else if (option === "Business" && cabinClass !== "business") {
+        console.log("Setting cabin class to Business");
+        setCabinClass("business");
+      }
+    };
     
     async function setFlight() {
         departureDate= departureDate;
         arrivalDate= arrivalDate;
-        setCabinClass(cabinClass); 
+        // setCabinClass(cabinClass); 
         travelers = travelers;
       
         let flight = {
@@ -102,17 +127,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
           setSelectedFlight(flight);
         }
     };
-    const handleOnClick = (option) => {
-        if (option == "Premium Economy" && cabinClass != "premium_economy") {
-            setCabinClass("premium_economy");
-        } else if (option == "Economy" && cabinClass != "economy") {
-            setCabinClass("economy");
-        } else if (option == "First" && cabinClass != "first") {
-            setCabinClass("first");
-        } else if (option == "Business" && cabinClass != "business") {
-            setCabinClass("business");
-        }
-    };
+   
     useEffect(() => {
         setFlight();
       }, [cabinClass]);
@@ -120,7 +135,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     useEffect(() => {
       let totalprice = cost + FlightCost;
       console.log("totalprice updated", totalprice);
-    }, [])
+    }, [cost])
 
 //for save for later feature
       const handleOnSubmit = async (e) => {
@@ -206,7 +221,9 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                     <div>
                       <div className="flex">
                         <div className="mr-2 text-4xl">Flights to</div>
-                        <div className="font-semibold text-blue-500 text-4xl">{destination.toUpperCase()}</div>
+                        <div className="font-semibold text-blue-500 text-4xl">
+                          {destination.toUpperCase() || localStorage.getItem("Destination").toUpperCase() || ""}
+                        </div>
                       </div>
                       <div className="flex-auto">
                         <div className="text-2xl flex flex-col mt-3">
@@ -220,7 +237,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                       </div>
                     </div>
                     <div className="ml-auto">
-                      <div className="text-2xl font-bold">Total trip cost: ${FlightCost}</div>
+                      <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
                       <div>
                         <div>Excluding taxes and fees.</div>
                         <div>
@@ -235,31 +252,45 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                                 : ''
                             }
                           >
-                            {itinerary['flight'] === null
+                            {!flightsFound || itinerary['flight'] === null
                               ? 'Select a flight to continue'
                               : 'Continue'}
                           </button>
-                          <button onClick = {handleOnSubmit}> Save For Later </button>
+                            <button
+                            disabled={!flightsFound || itinerary['flight'] === null}
+                            onClick={handleOnSubmit}
+                            className={
+                              !flightsFound || itinerary['flight'] === null
+                                ? 'bg-gray-100 text-gray-400'
+                                : ''
+                            }
+                          >
+                            Save For Later
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="relative w-full lg:max-w-sm flex flex-row mr-[270px] mb-[120px]">
+                  <div className="relative w-full lg:max-w-sm flex flex-row mr-[270px] mb-[10px]">
                     <h2 className="text-3xl mr-[10px] mt-[3px] font-semibold">
                       Cabin Class:
                     </h2>
                     <select
-                      onChange={(e) => handleOnClick(e.target.value)}
+                      value={cabinClass}
+                      onChange={(e) => setCabinClass(e.target.value)} // Update the cabin class directly
                       className="w-[200px] p-1 text-black bg-white border-white-2 rounded-md shadow-xl outline-md appearance-none focus:border-indigo-600 mb-5 text-center text-2xl"
                     >
-                      <option>Economy</option>
-                      <option>First</option>
-                      <option>Business</option>
-                      <option>Premium Economy</option>
+                      {["Economy", "First", "Business", "Premium Economy"].map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
                     </select>
+
                   </div>
                   <div className="flex flex-col">
-                    {searchResults.map((item, index) => (
+                  {searchResults.length > 0 ? (
+                    searchResults.map((item, index) => (
                       <FlightCard
                         key={index}
                         flight={item}
@@ -269,8 +300,17 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                         onSelectFlight={handleSelectFlight}
                         setFlightCost={setFlightCost}
                         FlightCost={FlightCost}
-                        />
-                    ))}
+                        setCost={setCost}
+                        cost={cost}
+                        hotelCost={hotelCost}
+                        checkout={false}
+                      />
+              ))
+            ) : (
+              <div className="text-2xl px-56 mt-4 ml-5">
+                No flights have been found for the selected criteria.
+              </div>
+            )}
                   </div>
                 </div>
               </div>

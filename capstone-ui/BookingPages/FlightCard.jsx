@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, setFlightCost }) {
+function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, setFlightCost, cost, setCost, hotelCost, key }) {
   const [formattedDepartureOutbound, setFormattedDepartureOutbound] = useState("");
   const [formattedArrivalOutbound, setFormattedArrivalOutbound] = useState("");
   const [formattedDepartureInbound, setFormattedDepartureInbound] = useState("");
@@ -16,12 +16,31 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
   const handleClose = () => setOpen(false);
   //console.log("The itienrary in flight card", itinerary);
 
-  useEffect(() => {
     // Check if the selected flight is in the itinerary
-    setSelected(itinerary.flight === flight);
-  }, [itinerary, flight]);
+    // setSelected(false);
+    // console.log("itinerary???? ", itinerary);
 
-  console.log("entered flights ");
+    // console.log("itinerayflight ", itinerary.flight, " ", itinerary.flight.name, " ", flight.name);
+    // setSelected(itinerary.flight && itinerary.flight.name === flight.name && itinerary.flight.name != null);
+    useEffect(() => {
+      console.log(flight, " the data");
+      setSelected(
+        itinerary.flight &&
+        itinerary.flight.length > 0 &&
+        itinerary.flight[0].id === flight.id &&  // Compare flight IDs
+        itinerary.flight[0].slices[0].segments[0].origin === flight.slices[0].segments[0].origin &&
+        itinerary.flight[0].slices[0].segments[0].destination === flight.slices[0].segments[0].destination &&
+        itinerary.flight[0].slices[0].segments[0].departingAt === flight.slices[0].segments[0].departingAt &&
+        itinerary.flight[0].slices[0].segments[0].arrivingAt === flight.slices[0].segments[0].arrivingAt &&
+        itinerary.flight[0].slices[1].segments[0].origin === flight.slices[1].segments[0].origin &&
+        itinerary.flight[0].slices[1].segments[0].destination === flight.slices[1].segments[0].destination &&
+        itinerary.flight[0].slices[1].segments[0].departingAt === flight.slices[1].segments[0].departingAt &&
+        itinerary.flight[0].slices[1].segments[0].arrivingAt === flight.slices[1].segments[0].arrivingAt &&
+        parseFloat(itinerary.flight[0].totalAmount) === parseFloat(flight.totalAmount)
+      );
+    }, [itinerary, flight]);
+    
+
 
   const handleSelectFlight = () => {
     // If the button is disabled, prevent further actions
@@ -32,17 +51,25 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
     console.log("got here");
   
     // Toggle the selected state
-    setSelected(selected);
+    console.log("selected ", selected, " loading ", loading);
+    let s = !selected;
+    setSelected(s);
     console.log("selected ", selected, " loading ", loading);
   
     // Update the itinerary with the selected flight or remove it
     const updatedItinerary = {
       ...itinerary,
-      flight: selected ? [] : [flight], // Set to an array with either the selected flight or an empty array
+      flight: selected ? null : [flight], // Set to an array with either the selected flight or an empty array
     };
   
     // Calculate the total cost based on the selected flight in the updated itinerary
-    const totalCost = selected ? 0 : parseFloat(flight.totalAmount);
+    const totalCost = selected ? parseFloat(hotelCost) : parseFloat(flight.totalAmount) + parseFloat(cost);
+
+    console.log("hotelcost", hotelCost);
+
+    console.log("cost ", cost, " totalcost ", totalCost.toFixed);
+    setCost(totalCost.toFixed(2));
+
   
     setFlightCost(totalCost.toFixed(2)); // Update the FlightCost prop
   
@@ -125,9 +152,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
   }, [flight]);
   return (
     <div className='p-5'>
-      {loading ? (
-        <CircularProgress />
-      ) : (
+     
         <div className='h-[300px] w-[995px] mr-[200px] border border-black-10 shadow-lg'>
           <div className='flex flex-row'>
             <div className='p-3 flex flex-col'>
@@ -139,16 +164,16 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
                     alt="Airline Logo"
                   />
                   <h1 className='ml-10 mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureInbound} hi
+                    {formattedDepartureInbound}
                   </h1>
                   <div className='flex flex-col'>
                     <hr className="absolute h-1 mt-[40px] w-[400px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px] mb-[10px]" />
                     <h1 className='absolute text-3xl ml-[140px] mt-[50px] text-blue-500'>
-                      {flight.slices[0].segments[0].carrier.name} ?
+                      {flight.slices[0].segments[0].carrier.name}
                     </h1>
                   </div>
                   <h1 className='absolute ml-[627px] mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureOutbound} ho
+                    {formattedDepartureOutbound}
                   </h1>
                 </div>
                 <div className='flex flex-row'>
@@ -186,16 +211,17 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, se
                 selected ? 'bg-green-600 text-gray-100' : ''
               }`}
               onClick={handleSelectFlight}
-              disabled={loading}
+              disabled={loading || checkout}
+              
             >
-              {loading & selected ? 'Selected' : 'Select'}
+              {selected ? 'Selected' : 'Select'}
             </button>
 
             </div>
             </div>
           </div>
         </div>
-      )}
+    
     </div>
   );
 }

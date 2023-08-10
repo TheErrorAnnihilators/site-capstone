@@ -38,7 +38,7 @@ function App() {
 
     const [destID, setDestID] = useState("")
 
-    const [FlightCost, setFlightCost] = useState(0)
+    const [FlightCost, setFlightCost] = useState(0.00)
 
 
     const [departureDate, setDepartureDate] = useState("")
@@ -54,10 +54,16 @@ function App() {
                                                 'Hotel' : null,
                                             'flight': null})
     const [activities, setActivities] = useState ({})
+    const [cabinClass, setCabinClass] = useState("");
+
 
     const [cost, setCost] = useState(0.00)
+    const [hotelCost, setHotelCost] = useState(0.00)
+    const [name, setName] = useState(0.00)
+
+
     const [userId, setUserId] = useState(0)
-    const [userData, setUserdata] = useState();
+    const [theuserData, setUserData] = useState('');
     const addToItinerary = (item)=>{
 
         
@@ -106,7 +112,7 @@ function App() {
     const fetchUserData = async (token, userId) => {
         try {
           const user = await fetchUserDataFromToken(token, userId);
-          setUserdata(user);
+          setUserData(user);
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
@@ -121,7 +127,7 @@ function App() {
                 <Router>
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
                             setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}
-                            setItinerary = {setItinerary}
+                            setItinerary = {setItinerary} name={name} setName={setName} setUserData={setUserData} theuserData={theuserData}
                             />
                     <Routes>
                         <Route path="/" element={
@@ -159,13 +165,16 @@ function App() {
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
                                     itinerary={itinerary} setItinerary={setItinerary}
-                                    filterActivities={filterActivities} />} 
+                                    filterActivities={filterActivities} 
+                                    hotelCost={hotelCost} setHotelCost={setHotelCost} 
+                                    FlightCost={FlightCost} setFlightCost={setFlightCost}
+                                    />} 
 
                         />
                          <Route path="/account" element={
                             <Account  authenticated={authenticated}
                             setAuthenticated={setAuthenticated}
-                            userData={userData}/>} 
+                            userData={theuserData}/>} 
                         />
                          <Route path="/Itineraries" element={
                             <Itinerary
@@ -177,6 +186,7 @@ function App() {
                                     cost={cost} setCost={setCost}
                                     userId = {userId}
                                     itinerary = {itinerary}
+                                    authenticated={authenticated}
                             />} 
 
                         />
@@ -185,17 +195,19 @@ function App() {
                                          destination={destination} arrivalDate={arrivalDate} 
                                          departureDate={departureDate} 
                                          travelers={travelers} departureIATA={departureIATA}
-                                         arrivalIATA={arrivalIATA} cost={cost} userId = {userId}
-                                          setFlightCost={setFlightCost}
-                                          FlightCost={FlightCost}
+                                         arrivalIATA={arrivalIATA} cost={cost} userId = {userId} setCost={setCost}
+                                         hotelCost={hotelCost} setHotelCost={setHotelCost} 
+                                         FlightCost={FlightCost} setFlightCost={setFlightCost}
+                                         cabinClass={cabinClass} setCabinClass={setCabinClass}
                             />} 
                         />
                          <Route path="/favorites" element={
                             <Favorites  authenticated={authenticated}/>} 
                         />
                          <Route path="/booking" element={
-                            <Booking itinerary={itinerary}  authenticated={authenticated}/>} 
-                        />
+                            <Booking itinerary={itinerary}  authenticated={authenticated} setCost={setCost} cost={cost} hotelCost={hotelCost} setHotelCost={setHotelCost} 
+                            FlightCost={FlightCost} setFlightCost={setFlightCost}/>} 
+                        /> 
                          <Route path="/checkout" element={
                             <Checkout itinerary={itinerary} arrivalDate={arrivalDate} departureDate={departureDate} destination={destination}/>} 
                         />
