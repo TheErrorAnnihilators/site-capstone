@@ -16,7 +16,7 @@ import pfp from '../../public/assets/user.png'
 function Itinerary({ arrivalDate, departureDate,
   travelers, destination, 
   destID, cost, setCost,
- userId, itinerary }) {
+ userId, itinerary, authenticated }) {
 
   const [loading, setLoading] = useState(true)
   const [hasItineraries,setHasItineraries] = useState(false)
@@ -33,7 +33,6 @@ const [userItineraries, setUserItineraries] = useState(null)
    
     axios
     .get(`https://nomadiafe.onrender.com/api/users/${userId}/itineraries`)
-
 
     .then((response) => {
       console.log("successful")
@@ -55,23 +54,21 @@ console.log("userId", userId)
     //  <ItineraryMenu searchResults={searchResults}/>
     // </div>
      <>
-    {userItineraries === null  && (
+    {/* {userItineraries === null && authenticated  && (
         <div>
             <div className="text-4xl px-56 mt-4 ml-5 w-screen h-screen">Loading Itineraries...  <CircularProgress /></div>
         </div>
-    )}
-    { userItineraries &&  (
-        <div>
-            <ItineraryMenu userItineraries={userItineraries}  hasItineraries = {hasItineraries} />
-        </div>
-    )}
+    )} */}
+    {/* { !authenticated && ( */}
+            <ItineraryMenu userItineraries={userItineraries}  hasItineraries = {hasItineraries} authenticated={authenticated} />
+    {/* )} */}
 </>
 
     
   );
 }
 
-function ItineraryMenu({userItineraries,hasItineraries}) {
+function ItineraryMenu({userItineraries,hasItineraries, authenticated}) {
 
   console.log("user itineraries",userItineraries)
   
@@ -91,53 +88,74 @@ function ItineraryMenu({userItineraries,hasItineraries}) {
       {/* Main content */}
       <div className="h-full flex flex-grow items-center justify-center">
         <div className="w-1/3 flex-grow p-4 mb-10">
-          <h1 className="text-5xl mb-20 ml-2 font-bold font-sans">Nomadia</h1>
-          <div className="w-36 h-36 bg-white rounded-full border border-black ml-16"></div>
-            <div className="w-full h-full ml-9">
+        <h1 className="text-5xl mb-20 ml-2 font-bold font-sans" style={{
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
+                            color: '#f0f0f0', // White text color
+                            transition: 'text-shadow 0.2s ease-in-out',
+                            cursor: 'pointer',
+                            // Add other styles to make it stand out more
+                            letterSpacing: '2px',
+                        }}>
+                            Nomadia
+                        </h1>
+                        <img
+                src={pfp} // Replace with the actual URL of the profile photo
+                alt="Profile"
+                className="ml-6 w-1/2 h-1/2 object-cover"
+              />
 
-              <p className="mt-8 font-black">
-                Email: user@mail.com
-              </p>
+             
               <Link to='/Account' className='text-black'>
-                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-black border-2 shadow-md">
+                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-white border-2 shadow-md">
                   Account
                 </span>
               </Link>
-                <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
+                <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                   Itineraries
                 </span>
             <Link to='/booking' className='text-black'>
-              <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
+              <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                   Booking
                 </span>
             </Link>
-            <Link to='/Favorites' className='text-black'>
-                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
+            {/* <Link to='/Favorites' className='text-black'>
+                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                   Favorites
                 </span>
-              </Link>
+              </Link> */}
             </div>
         </div>
         <div className="w-2/3 h-4/5 mb-20 flex flex-col mt-[-10px]">
             <div>
-              <h1 className="text-4xl">Itineraries</h1>
+            <h1 className="text-4xl font-bold text-black mb-2 mt-10" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.6)' }}>Itineraries</h1>
+
             </div>
 
             <div className="border-t border-black-500 border-2"/>
             <div className="flex flex-col min-h-screen">
 
               <div className="grid grid-cols-3 gap-6 mt-3">
-              {userItineraries.length === 0? (
-                       <p>No itineraries saved.</p>
-                    ) : (
-                    userItineraries.map((userItinerary, index) => (
-                     <ItineraryCards
-                        userItinerary={userItinerary}
-                             key={index}
-                             index = {index}
-                                               />
-                         ))
-                    )}
+              {authenticated ? (
+                userItineraries === null ? (
+                  <div className="w-screen h-screen">
+                    <div className="text-4xl px-56 mt-4 ml-5">
+                      Fetching user itineraries... <CircularProgress />
+                    </div>
+                  </div>
+                ) : userItineraries.length === 0 ? (
+                  <p>No itineraries saved.</p>
+                ) : (
+                  userItineraries.map((userItinerary, index) => (
+                    <ItineraryCards
+                      userItinerary={userItinerary}
+                      key={index}
+                      index={index}
+                    />
+                  ))
+                )
+              ) : (
+                <p className="text-blue-100 text-2xl text-center ml-[50px] mt-[300px] whitespace-nowrap">Please log in or register to save and view your itineraries! </p>
+              )}
              </div>
           
           </div>
@@ -145,7 +163,7 @@ function ItineraryMenu({userItineraries,hasItineraries}) {
 
         </div>
       </div>
-    </div>
+    
 
   </>
 

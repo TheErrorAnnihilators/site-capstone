@@ -14,11 +14,14 @@ import FlightsCard from '../BookingPages/FlightCard';
 
 
 
-function Booking({ itinerary, authenticated }) {
+function Booking({ itinerary, authenticated, cost, setCost }) {
     const [the_itinerary, set_the_itinerary] = useState(null);
     const [loading, setLoading] = useState(true);
     const [itineraryPresent, setItineraryPresent] = useState(false)
     const [unsavedChanges, setUnsavedChanges] = useState(false); // Add this state
+    const [thefinalcost, setthefinalcost] = useState(0); // Add this state
+
+
 
     window.addEventListener('beforeunload', (event) => {
         event.returnValue = `Are you sure you want to leave?`;
@@ -91,7 +94,7 @@ function Booking({ itinerary, authenticated }) {
     return (
         <>
            
-       <BookingMenu itinerary={the_itinerary} itineraryPresent={itineraryPresent} loading={loading} authenticated={authenticated} set_the_itinerary={set_the_itinerary}/>
+       <BookingMenu itinerary={the_itinerary} itineraryPresent={itineraryPresent} loading={loading} authenticated={authenticated} set_the_itinerary={set_the_itinerary} cost={cost} setCost={setCost} setthefinalcost={setthefinalcost} thefinalcost={thefinalcost}/>
                
         </>
     );
@@ -99,11 +102,14 @@ function Booking({ itinerary, authenticated }) {
 
 
 
-function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_the_itinerary }) {
+function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_the_itinerary,cost, setCost, setthefinalcost, thefinalcost }) {
 
 
 
     const [email, setEmail] = useState(null);
+
+
+    // console.log("itinerary flight", itinerary.flight, " logging itinerary", itinerary);
 
     async function fetchUserDataFromToken(token, userId) {
         
@@ -124,25 +130,12 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
         }
     }
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-  
-    if (token) {
-      const userId = localStorage.getItem('userId');
-      fetchUserData(token, userId);
-    }
-  }, []);
+    setthefinalcost(cost);
 
-  const fetchUserData = async (token, userId) => {
-    try {
-      const user = await fetchUserDataFromToken(token, userId);
-      setEmail(user.email);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-  };
 
-  console.log("the data", email)
+    setCost(0);
+
+    console.log(loading);
     
     return (
         <>
@@ -174,7 +167,6 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                             className="ml-6 w-1/2 h-1/2 object-cover"
                         />
                         <p className="mt-8 font-black">
-                        {authenticated ? <strong>Email: </strong> : null} {{email} ? email : ''}
 
                         </p>
                             <Link to='/Account' className='text-black'>
@@ -190,11 +182,11 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                             <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                                 Booking
                             </span>
-                            <Link to='/Favorites' className='text-black'>
+                            {/* <Link to='/Favorites' className='text-black'>
                                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                                     Favorites
                                 </span>
-                            </Link>
+                            </Link> */}
                         </div>
                     </div>
                     <div className="w-2/3 h-4/5 mb-20 flex flex-col mt-[-10px]">
@@ -209,7 +201,11 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                         {!loading ? (
                             <>
                             <div className="cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100">
-                                {itinerary.Hotel != null && (
+                            {itinerary != null && (
+                                                    (itinerary.Hotel != null) ||
+                                                    (itinerary.Activities != null && itinerary.Activities.length > 0) ||
+                                                    (itinerary.flight != null)
+                                                    ) && (
                                 <>
                                 <div className="p-3 overflow-show bg-white mb-3">
                                     <div className="font-bold text-2xl h-10 overflow-scroll text-black">{itinerary?.Hotel?.name}</div>
@@ -240,20 +236,85 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                 </div>
                                 </>
                                 )}
-                                <div>{itinerary['Activities'].map((item, index) => {
+                                <div>{itinerary != null && itinerary['Activities'].map((item, index) => {
                                     return (<div className="mb-3"><ActivityCards activity={item} checkout={true} key={index} /></div>)
-                                })}{itineraryPresent && itinerary.flight != null && (
-                                    <div className="flight-card-container">
-                                      <FlightsCard
-                                        flight={itinerary.flight}
-                                        itinerary={itinerary}
-                                        setItinerary={set_the_itinerary}
-                                        checkout={true} // Adjust this as needed
-                                        cost={'0'}
-                                        setCost={'0'}
-                                      />
-                                    </div>
-                                  )}
+                                })}{itinerary != null && itinerary['flight'] != null && itinerary['flight'].map((flight, index) => {
+                                    const formattedDepartureOutbound = convertToNormalTime(flight.slices[0].segments[0].departingAt);
+                                    const formattedArrivalOutbound = convertToNormalTime(flight.slices[0].segments[0].arrivingAt);
+                                    const formattedDepartureInbound = convertToNormalTime(flight.slices[1].segments[0].departingAt);
+                                    const formattedArrivalInbound = convertToNormalTime(flight.slices[1].segments[0].arrivingAt);
+                                  
+                                    function convertToNormalTime(dateTimeString) {
+                                      const dateObj = new Date(dateTimeString);
+                                      const hours = dateObj.getHours();
+                                      const minutes = dateObj.getMinutes();
+                                      const amPm = hours >= 12 ? 'pm' : 'am';
+                                      const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+                                      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+                                      return `${formattedHours}:${formattedMinutes} ${amPm}`;
+                                    }
+                                  
+                                    return (
+                                      <div className="flight-card-container bg-white" key={index}>
+                                        <div>
+                                          <div className='flex flex-row mb-[120px] mr-2'>
+                                            {/* Airline Logo */}
+                                            <img
+                                              className='w-[50px] h-[50px] mr-[-20px] mt-3'
+                                              src={flight.slices[0].segments[0].carrier.logoUrl}
+                                              alt="Airline Logo"
+                                            />
+                                            {/* Formatted Departure Inbound */}
+                                            <h1 className='ml-10 mt-4 text-4xl whitespace-nowrap'>
+                                              {formattedDepartureInbound}
+                                            </h1>
+                                            <div className='flex flex-col'>
+                                              <hr className="h-1 mt-[40px] w-[150px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px] mb-[10px]" />
+                                              {/* Airline Name */}
+                                              <h1 className='text-2xl ml-[5px] mt-[-2px] text-blue-500 whitespace-nowrap'>
+                                                {flight.slices[0].segments[0].carrier.name}
+                                              </h1>
+                                            </div>
+                                            {/* Formatted Departure Outbound */}
+                                            <h1 className='mr-[18px] ml-2 mt-4 text-4xl whitespace-nowrap'>
+                                              {formattedDepartureOutbound}
+                                            </h1>
+                                          </div>
+                                          <div className='flex flex-row'>
+                                            {/* Airline Logo */}
+                                            <img
+                                              className='w-[50px] h-[50px] mt-[-100px] mr-5'
+                                              src={flight.slices[1].segments[0].carrier.logoUrl}
+                                              alt="Airline Logo"
+                                            />
+                                            {/* Formatted Arrival Inbound */}
+                                            <h1 className='mt-4 text-4xl whitespace-nowrap mt-[-100px]'>
+                                              {formattedArrivalInbound}
+                                            </h1>
+                                            <div className='flex flex-col'>
+                                              <hr className="h-1 mt-[-80px] w-[150px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px]" />
+                                              {/* Airline Name */}
+                                              <h1 className='text-2xl ml-[5px] mt-[-10px] text-blue-500 whitespace-nowrap'>
+                                                {flight.slices[1].segments[0].carrier.name}
+                                              </h1>
+                                            </div>
+                                            {/* Formatted Arrival Outbound */}
+                                            <h1 className='mr-4 ml-2 mt-[-95px] text-4xl whitespace-nowrap'>
+                                              {formattedArrivalOutbound}
+                                            </h1>
+                                          </div>
+                                        </div>
+                                        {/* Total Price */}
+                                        <div className='flex flex-row'>
+                                        <h1 className='text-3xl mt-5'>Total Price: </h1>
+                                        <h1 className='text-3xl ml-2 mt-5 text-green-500'>${flight.totalAmount}</h1>
+                                        <h1 className='text-sm mt-7 ml-[120px] text-gray-500'>*Total price for all travelers</h1>
+                                        </div>
+                                      
+                                      </div>
+                                    );
+                                  })}
+                                  
                             
                                 </div>
                             </div>
@@ -268,7 +329,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                           {(itineraryPresent && itinerary.Hotel != null) ? (
                 <div>
 
-                    <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: ${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</h2>
+                    <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: {thefinalcost}</h2>
                     <hr className="mt-4 w-64 border-2 border-white" />
                     <div className="flex items-center mt-[100px] ml-[210px]">
                         <h2 className='text-[25px] font-bold text-white mr-4'>Ready to checkout?</h2>

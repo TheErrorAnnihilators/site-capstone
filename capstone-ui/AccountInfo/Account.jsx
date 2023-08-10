@@ -111,7 +111,6 @@ function AccountMenu({ authenticated, setAuthenticated }) {
                 className="ml-6 w-1/2 h-1/2 object-cover"
               />
               <p className="mt-8 font-black">
-                <strong>Email:  </strong> {userData ? userData.email : ''}
               </p>
             
               <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-white border-2 shadow-md">
@@ -128,11 +127,11 @@ function AccountMenu({ authenticated, setAuthenticated }) {
                   Booking
                 </span>
              </Link>
-             <Link to='/Favorites' className='text-black'>
+             {/* <Link to='/Favorites' className='text-black'>
                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
                   Favorites
                 </span>
-              </Link>
+              </Link> */}
             </div>
           </div>
           
@@ -141,6 +140,8 @@ function AccountMenu({ authenticated, setAuthenticated }) {
             <h1 className="text-4xl font-bold text-black mb-2 mt-10" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.6)' }}>Account</h1>
 
             </div>
+            <div class="border-t border-black-500 border-2 mb-8"></div>
+
             {!authenticated && <p className="text-blue-100 text-2xl text-center mt-[300px]">Login/Register view!</p>}
 
           
@@ -151,7 +152,6 @@ function AccountMenu({ authenticated, setAuthenticated }) {
             
             <>
                 
-            <div class="border-t border-black-500 border-2 mb-8"></div>
             <div class="flex flex-col items-center mb-6">
               <h2 class="text-center mb-4 mr-[340px] text-white"><strong>Personal Information</strong></h2>
               <hr className="border-white w-[80%] mb-4 mr-8" />
@@ -176,7 +176,7 @@ function AccountMenu({ authenticated, setAuthenticated }) {
           <h2 class="text-center mb-4 mr-[340px]"><strong>Email</strong></h2>
           <div class="flex items-center mr-[60px]">
             <div className="w-80 h-12 bg-gray-200 border border-black">
-            {authenticated ? <strong>Email: </strong> : null} {{userData} ? userData.email : ''}
+            {authenticated ? <strong></strong> : null} {{userData} ? <p className="mt-2 ml-2 font-black text-2xl">{userData.email}</p> : ''}
 
             </div>
             {/* Add button for changing email if needed */}

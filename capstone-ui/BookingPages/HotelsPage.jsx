@@ -5,7 +5,8 @@ import '../index.css'
 import HotelCard from './HotelCard'
 import axios from 'axios'
 
-export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, itinerary, setItinerary, filterActivities, filterFlights }) {
+export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, 
+  itinerary, setItinerary, filterActivities, filterFlights, hotelCost, setHotelCost }) {
   const navigate = useNavigate();
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -54,6 +55,10 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
   useEffect(() => {
     searchHotels();
   }, []);
+
+  // useEffect(() => {
+  //   setHotelCost(cost);
+  // }, [cost]);
 
   return (
     <div className="w-screen h-screen">
@@ -114,6 +119,7 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
                     setItinerary={setItinerary}
                     cost={cost}
                     setCost={setCost}
+                    setHotelCost={setHotelCost}
                   />
                 ))}
               </div>
