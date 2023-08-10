@@ -173,7 +173,7 @@ router.post('/register', async (req, res) => {
     const token = createUserJwt(newUser); 
     console.log(token)
     
-    res.status(201).json({newUser, token, password, phone_number, email, name});
+    res.status(201).json({newUser, token, password});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to register user." });
