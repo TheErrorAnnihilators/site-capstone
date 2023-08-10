@@ -121,6 +121,7 @@ function App() {
                 <Router>
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
                             setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}
+                            setItinerary = {setItinerary}
                             />
                     <Routes>
                         <Route path="/" element={
@@ -175,6 +176,7 @@ function App() {
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
                                     userId = {userId}
+                                    itinerary = {itinerary}
                             />} 
 
                         />
