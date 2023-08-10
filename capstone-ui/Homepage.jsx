@@ -32,6 +32,12 @@ import syd from "../public/assets/sydney.jpg"
 import auck from "../public/assets/auckland.jpg"
 import oahu from "../public/assets/oahu.jpg"
 import banner from "../public/assets//homepage-banner.jpg"
+import React from 'react';
+import { Tooltip } from 'react-tippy';
+import moreinfo from "../public/assets/more-information.jpg"
+
+
+
 
 
 
@@ -43,7 +49,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    destination, setDestination,
                                    travelers, setTravelers, destID, setDestID,
                                    departureIATA, setDepartureIATA,
-                                   arrivalIATA, setArrivalIATA
+                                   arrivalIATA, setArrivalIATA, authenticated
                                  }) {
     
     const [submit, setSubmit] = useState(false)
@@ -156,6 +162,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         I want to search for... 
                     </div>
                     <div className="flex space-x-4">
+                   
                         <Chip 
                             label="Hotels"
                             onClick={() => setFilterHotels(!filterHotels)}
@@ -181,6 +188,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             sx={{'borderRadius':'4px', 'width':'67px',
                                  'fontFamily':'Cairo'}}
                         />
+                        {authenticated && <Tooltip title="To save order for later, you must have a hotel, flight, and activity">
+                        <img src={moreinfo} className='ml-[690px] w-[20px] h-[20px] mt-2'/>
+                        </Tooltip> }
+                        
                     </div>
                     <div className={`flex space-x-4 w-full mt-4 ${filterHotels || 
                                      filterActivities || filterFlights ? 
