@@ -131,16 +131,11 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         // Update the state using the setSavedItinerary function
         setSavedItinerary({
             hotelData: {
-                // name: itinerary.Hotel.name,
-                // city: itinerary.Hotel.wishlistName,
-                // price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
-                // check_in: itinerary.Hotel.checkinDate,
-                // check_out: itinerary.Hotel.checkoutDate,
-                name: "hotel1",
-                city: "city1",
-                price: 500000000,
-                check_in:"2023-08-10",
-                check_out: "2023-08-14"
+                name: itinerary.Hotel.name,
+                city: itinerary.Hotel.wishlistName,
+                price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
+                check_in: itinerary.Hotel.checkinDate,
+                check_out: itinerary.Hotel.checkoutDate,
             },
             activities:itinerary.Activities.map(activity => ({ 
                 //itinerary.Activities[0].name
@@ -148,10 +143,8 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                     name: activity.name,
                     city: activity.location.locality,
                     price: 0,
-                    check_in:"2023-08-10",
-                    check_out: "2023-08-14"
-                    // check_in: itinerary.Hotel.checkinDate,
-                    // check_out: itinerary.Hotel.checkoutDate,
+                    check_in: itinerary.Hotel.checkinDate,
+                    check_out: itinerary.Hotel.checkoutDate,
                 })),
             
                 //origin and destination are flipped in res

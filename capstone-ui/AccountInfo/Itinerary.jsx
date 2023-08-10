@@ -34,6 +34,7 @@ const [userItineraries, setUserItineraries] = useState(null)
     axios
     .get(`https://nomadiafe.onrender.com/api/users/${userId}/itineraries`)
 
+
     .then((response) => {
       console.log("successful")
       console.log("res", response.data)
