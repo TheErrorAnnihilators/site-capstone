@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { BadRequestError } = require("../utils/errors");
 const db = require('../db')
+
 const rapidapikey = process.env.rapidapikey
 const rapidapihost = process.env.rapidapihost
 const axios = require('axios');

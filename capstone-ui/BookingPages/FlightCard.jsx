@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 
-function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost }) {
+function FlightsCard({ flight, itinerary, setItinerary, checkout, FlightCost, setFlightCost }) {
   const [formattedDepartureOutbound, setFormattedDepartureOutbound] = useState("");
   const [formattedArrivalOutbound, setFormattedArrivalOutbound] = useState("");
   const [formattedDepartureInbound, setFormattedDepartureInbound] = useState("");
@@ -21,14 +21,19 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
     setSelected(itinerary.flight === flight);
   }, [itinerary, flight]);
 
+  console.log("entered flights ");
+
   const handleSelectFlight = () => {
     // If the button is disabled, prevent further actions
+    console.log("enetered selected flight");
     if (loading) {
       return;
     }
+    console.log("got here");
   
     // Toggle the selected state
-    setSelected(!selected);
+    setSelected(selected);
+    console.log("selected ", selected, " loading ", loading);
   
     // Update the itinerary with the selected flight or remove it
     const updatedItinerary = {
@@ -39,18 +44,21 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
     // Calculate the total cost based on the selected flight in the updated itinerary
     const totalCost = selected ? 0 : parseFloat(flight.totalAmount);
   
-    setCost(totalCost.toFixed(2)); // Update the cost state
+    setFlightCost(totalCost.toFixed(2)); // Update the FlightCost prop
   
     // Disable the button temporarily during the state update
     setLoading(true);
+    console.log("selected ", selected, " loading ", loading);
+
   
     setTimeout(() => {
       setItinerary(updatedItinerary);
       setLoading(false);
     }, 800); // Adjust the delay as needed
     console.log("the itinerary", itinerary);
-
   };
+
+  
  //console.log("flights", itinerary)
   function updateItinerary() {
     if (selected) {

@@ -32,7 +32,8 @@ const [userItineraries, setUserItineraries] = useState(null)
   useEffect(() => {
    
     axios
-    .get(`https://nomadiafe.onrender/api/users/${userId}/itineraries`)
+    .get(`https://nomadiafe.onrender.com/api/users/${userId}/itineraries`)
+
 
     .then((response) => {
       console.log("successful")

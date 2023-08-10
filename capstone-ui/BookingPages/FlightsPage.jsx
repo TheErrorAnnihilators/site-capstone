@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
                        departureDate, travelers, cost,
-                       departureIATA, arrivalIATA, userId, setCost }) {
+                       departureIATA, arrivalIATA, userId, setFlightCost, FlightCost }) {
 
     const navigate = useNavigate();
 
@@ -118,7 +118,8 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
       }, [cabinClass]);
 
     useEffect(() => {
-      
+      let totalprice = cost + FlightCost;
+      console.log("totalprice updated", totalprice);
     }, [])
 
 //for save for later feature
@@ -212,7 +213,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                       </div>
                     </div>
                     <div className="ml-auto">
-                      <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
+                      <div className="text-2xl font-bold">Total trip cost: ${FlightCost}</div>
                       <div>
                         <div>Excluding taxes and fees.</div>
                         <div>
@@ -259,8 +260,9 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                         setItinerary={setItinerary}
                         selectedFlight={selectedFlight}
                         onSelectFlight={handleSelectFlight}
-                        setCost={setCost}
-                      />
+                        setFlightCost={setFlightCost}
+                        FlightCost={FlightCost}
+                        />
                     ))}
                   </div>
                 </div>
