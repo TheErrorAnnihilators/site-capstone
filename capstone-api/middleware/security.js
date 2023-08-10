@@ -10,7 +10,7 @@ const fetchUserDataFromToken = async(token, userId) => {
     
     try {
         // Make an API call to fetch user data using the token
-        const response = await axios.get(`https://nomadiafe.onrender.com/users/${userId}`, {
+        const response = await (`https://nomadiafe.onrender.com/users/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

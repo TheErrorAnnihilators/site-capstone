@@ -59,7 +59,7 @@ export default function Activities({
         // Fetch activities data from the server
         setLoading(true)
         axios
-        .post("https://nomadia.onrender.com/api/places-search", {
+        .post("https://nomadiafe.onrender.com/api/places-search", {
             query: searchValue,
             min_price: "1",
             max_price: priceValue,
