@@ -151,6 +151,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                 price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
                 check_in: itinerary.Hotel.checkinDate,
                 check_out: itinerary.Hotel.checkoutDate,
+
             },
             activities:itinerary.Activities.map(activity => ({ 
                 //itinerary.Activities[0].name
@@ -177,6 +178,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         setItinerary({'Activities' : [],
                         'Hotel' : null,
                         'flight': null})
+        setCost(0.00)
         setItinerariesSaved(itinerariesSaved + 1)
        
 

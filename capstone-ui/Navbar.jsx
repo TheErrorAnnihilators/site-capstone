@@ -11,7 +11,7 @@ export default function Navbar({
     authenticated,
     setAuthenticated,
     name,
-    setName, setDepartureDate, setArrivalDate, setUserId, setItinerary, theuserData, setUserData }) {
+    setName, setDepartureDate, setArrivalDate, setUserId, setItinerary, theuserData, setUserData , setCost}) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -51,10 +51,11 @@ export default function Navbar({
 
     setUserId('')
     setUserData('')
+    
     setItinerary({'Activities' : [],
                         'Hotel' : null,
-                        'flight': null}) //resets itinerary when user logs out
-
+                        'flight': null})//resets itinerary when user logs out
+    setCost(0.00)
     // Navigate to the home page
     navigate('/')
         location.reload()
@@ -179,9 +180,10 @@ export default function Navbar({
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
         <Link to="/" className="flex">
           <div className="flex">
-            <Button onClick={() => {setDepartureDate(null), setArrivalDate(null), setItinerary({'Activities' : [],
+            <Button onClick={() => {setDepartureDate(''), setArrivalDate(''), setItinerary({'Activities' : [],
                         'Hotel' : null,
-                        'flight': null})}}>Home</Button>
+                        'flight': null}),  setCost(0.00) }}>Home</Button>
+
           </div>
         </Link>
 

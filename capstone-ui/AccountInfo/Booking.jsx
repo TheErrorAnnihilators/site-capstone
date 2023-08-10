@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react'
 import pfp from '../../public/assets/user.png'
 import axios from 'axios'
 import FlightsCard from '../BookingPages/FlightCard';
+import { teal } from 'color-name';
 
 
 
@@ -21,7 +22,8 @@ function Booking({ itinerary, authenticated, cost, setCost }) {
     const [unsavedChanges, setUnsavedChanges] = useState(false); // Add this state
     const [thefinalcost, setthefinalcost] = useState(0); // Add this state
 
-
+    const hotel_price = 500
+    //itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2)
 
     window.addEventListener('beforeunload', (event) => {
         event.returnValue = `Are you sure you want to leave?`;
@@ -33,6 +35,7 @@ function Booking({ itinerary, authenticated, cost, setCost }) {
         if (itinerary != null && (itinerary.Hotel != null || itinerary.Activities != [] || itinerary.flight != null)) {
             console.log("?", itinerary)
             set_the_itinerary(itinerary);
+
             setItineraryPresent(true)
             setLoading(false);
             localStorage.setItem("Itinerary", JSON.stringify(itinerary))
@@ -133,9 +136,10 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
     setthefinalcost(cost);
 
 
-    setCost(0);
+   // setCost(0);
 
     console.log(loading);
+    console.log("cost",thefinalcost)
     
     return (
         <>
