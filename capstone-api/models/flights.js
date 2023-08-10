@@ -63,6 +63,7 @@ class Flights {
         offers = offers.filter(offer => offer.slices.every(slice => slice.segments.length === 1));
 
         offers = offers.map(offer => ({
+          id: offer.id,  // Add the id field here
           totalAmount: offer.total_amount,
           totalCurrency: offer.total_currency,
           slices: offer.slices.map(slice => ({
@@ -79,6 +80,7 @@ class Flights {
             })),
           })),
         }));
+
         
         return offers;
       }
