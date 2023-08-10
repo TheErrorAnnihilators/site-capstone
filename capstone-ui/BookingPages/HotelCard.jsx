@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import HotelModal from './HotelModal';
 
 export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary, 
-                                    setItinerary, cost, setCost, checkout = false, setHotelCost }) {
+                                    setItinerary, cost, setCost, checkout=false, setHotelCost }) {
   const [added, setAdded] = useState(false);
 
   useEffect(() => {

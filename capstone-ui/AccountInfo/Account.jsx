@@ -97,13 +97,12 @@ function AccountMenu({ authenticated, setAuthenticated }) {
         
       >
         {/* Main content */}
-        <div className="h-full flex flex-grow items-center justify-center">
-          <div className="w-1/3 flex-grow p-4 mb-10">
-          <h1 className="text-5xl mb-20 ml-2 font-bold font-sans" style={{
+        <div className="h-full flex justify-center bg-slate-900">
+          <div className="w-full mb-10 pl-10">
+          <h1 className="text-5xl mb-10 ml-2 font-semibold font-sans mt-4" style={{
                             textShadow: '2px 2px 4px rgba(0, 0, 0, 0.4)',
                             color: '#f0f0f0', // White text color
                             transition: 'text-shadow 0.2s ease-in-out',
-                            cursor: 'pointer',
                             // Add other styles to make it stand out more
                             letterSpacing: '2px',
                         }}>
@@ -112,24 +111,24 @@ function AccountMenu({ authenticated, setAuthenticated }) {
             <img
                 src={pfp} // Replace with the actual URL of the profile photo
                 alt="Profile"
-                className="ml-6 w-1/2 h-1/2 object-cover"
+                className="w-1/2"
               />
               <p className="mt-8 font-black">
               </p>
             
-              <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-white border-2 shadow-md">
-                Account
-              </span>
+              <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Account
+                </button>
 
               <Link to='/Itineraries' className='text-black'>
-                <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
-                  Itineraries
-                </span>
+              <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Itineraries
+                            </button>
               </Link>
              <Link to='/booking' className='text-black'>
-              <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
-                  Booking
-                </span>
+             <button className="w-3/5 h-10 flex justify-center items-center rounded-md mt-5 shadow-md">
+                                Latest booking
+                            </button>
              </Link>
              {/* <Link to='/Favorites' className='text-black'>
                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-white border-2 shadow-md">
@@ -139,14 +138,14 @@ function AccountMenu({ authenticated, setAuthenticated }) {
             </div>
           </div>
           
-          <div className="w-2/3 h-4/5 mb-20 flex flex-col mt-[-10px] flex flex-row">
+          <div className="w-full flex flex-col bg-black bg-opacity-60 px-2">
             <div>
-            <h1 className="text-4xl font-bold text-black mb-2 mt-10" style={{ textShadow: '1px 1px 2px rgba(255, 255, 255, 0.6)' }}>Account</h1>
+            <h1 className="text-4xl text-white mb-2 mt-4">Account</h1>
 
             </div>
             <div class="border-t border-black-500 border-2 mb-8"></div>
 
-            {!authenticated && <p className="text-blue-100 text-2xl text-center mt-[300px]">Login/Register view!</p>}
+            {!authenticated && <p className="text-blue-100 text-2xl text-center mt-[300px]">Log in or register to view account details.</p>}
 
           
             {(userData == null && authenticated) && 
